@@ -1,0 +1,16 @@
+{
+  "name": "Rehab log",
+  "short_name": "Rehab log",
+  "description": "Personal rehab logger: sessions, check-ins, left and right leg tracking, tolerance tests, Flight Mode and clinic reports.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#E8EEEC",
+  "theme_color": "#24675F",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

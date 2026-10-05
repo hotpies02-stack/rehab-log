@@ -1,0 +1,1922 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#24675F">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Rehab log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E8EEEC; --surface:#F8FBFA; --raised:#FFFFFF; --ink:#16272B; --muted:#56686C; --line:#C9D5D2;
+  --accent:#24675F; --accent-soft:#D3E7E3; --on-accent:#FFFFFF;
+  --right:#B97A06; --right-soft:#F5E6C3; --danger:#B3261E; --danger-soft:#F8DDDA; --warn-soft:#FBEFD2;
+  --rest:#6F8589;
+  --display:"Barlow Condensed", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
+  --body:"Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E191C; --surface:#16252A; --raised:#1C2E33; --ink:#E3ECEA; --muted:#9AAEB1; --line:#2C4248;
+    --accent:#4FB3A6; --accent-soft:#183C39; --on-accent:#08201D;
+    --right:#E7AE3C; --right-soft:#3A2E12; --danger:#F2867D; --danger-soft:#3D1A18; --warn-soft:#3A2E12;
+    --rest:#7E9599; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E191C; --surface:#16252A; --raised:#1C2E33; --ink:#E3ECEA; --muted:#9AAEB1; --line:#2C4248;
+  --accent:#4FB3A6; --accent-soft:#183C39; --on-accent:#08201D;
+  --right:#E7AE3C; --right-soft:#3A2E12; --danger:#F2867D; --danger-soft:#3D1A18; --warn-soft:#3A2E12;
+  --rest:#7E9599; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.45;-webkit-text-size-adjust:100%}
+main{max-width:560px;margin:0 auto;padding:18px 16px 170px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.1;margin:0}
+h1{font-size:2.4rem;letter-spacing:.01em}
+h2{font-size:1.6rem;margin:26px 0 10px}
+h3{font-size:1.3rem}
+p{margin:0 0 8px}
+.sub{color:var(--muted);margin-top:4px}
+.small{font-size:.9rem;color:var(--muted)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.cloud{font-size:.82rem;color:var(--muted);margin-top:6px}
+.iconbtn{background:none;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:.95rem;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;border-radius:12px;border:1px solid var(--line);background:var(--raised);font-weight:600;font-size:1.05rem;padding:10px 14px;text-align:center}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--danger);border-color:var(--danger);background:transparent}
+.btn+.btn{margin-top:10px}
+.row{display:flex;gap:10px}
+.row>*{flex:1}
+.row .btn+.btn{margin-top:0}
+.action{display:block;text-align:left;width:100%;background:var(--raised);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:10px}
+.action strong{display:block;font-family:var(--display);font-size:1.45rem;font-weight:700}
+.action span{color:var(--muted);font-size:.95rem}
+.action.main{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.action.main span{color:var(--on-accent);opacity:.85}
+.alert{border-radius:14px;padding:14px 16px;margin-bottom:12px;border:1px solid}
+.alert.danger{background:var(--danger-soft);border-color:var(--danger)}
+.alert.warn{background:var(--warn-soft);border-color:var(--right)}
+.alert strong{display:block;margin-bottom:4px}
+/* sliders */
+.sl{display:block;margin:6px 0 18px}
+.sl-top{display:flex;justify-content:space-between;align-items:baseline;font-weight:600}
+.sl-top output{font-family:var(--display);font-size:1.8rem;font-weight:700;min-width:2ch;text-align:right}
+.sl input{width:100%;accent-color:var(--accent);height:34px;margin:2px 0}
+.sl-ends{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted)}
+.sl.r .sl-top output{color:var(--right)}
+.sl.r input{accent-color:var(--right)}
+/* chips */
+.q{margin:4px 0 18px}
+.q>p{font-weight:600;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--raised);border-radius:999px;padding:9px 14px;font-size:.95rem;min-height:42px}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+/* exercises */
+.block-title{display:flex;justify-content:space-between;align-items:baseline}
+.ex{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.ex.complete{border-color:var(--accent)}
+.ex-head{display:flex;justify-content:space-between;gap:10px;margin-bottom:10px}
+.target{color:var(--muted);font-size:.92rem;margin:4px 0 0}
+.count{font-family:var(--display);font-size:1.5rem;font-weight:700;color:var(--muted);white-space:nowrap}
+.ex.complete .count{color:var(--accent)}
+.set{display:grid;grid-template-columns:50px 1fr 56px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.set-n{font-family:var(--display);font-weight:600;font-size:1.1rem;color:var(--muted);white-space:nowrap}
+.set-body{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stepper{display:inline-grid;grid-template-columns:40px 46px 40px;align-items:center;border:1px solid var(--line);border-radius:10px;background:var(--raised);overflow:hidden}
+.stepper button{border:0;background:none;height:44px;font-size:1.3rem}
+.stepper .v{text-align:center;font-family:var(--display);font-size:1.4rem;font-weight:700}
+.side{display:inline-flex;align-items:center;gap:4px}
+.side b{font-family:var(--display);font-size:1.1rem;width:16px;text-align:center}
+.side.r b{color:var(--right)}
+.side.r .stepper{border-color:var(--right)}
+.kg{display:inline-flex;align-items:center;gap:4px;color:var(--muted);font-size:.9rem}
+.kg input{width:62px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--raised);color:var(--ink);font:inherit;font-size:1.05rem;text-align:center}
+.done{width:52px;height:52px;border-radius:50%;border:2px solid var(--line);background:var(--raised);font-size:1.4rem;justify-self:end}
+.done.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.holdbtn{border:1px solid var(--line);background:var(--raised);border-radius:10px;padding:10px 12px;min-height:44px;font-weight:600}
+.holdbtn.r{border-color:var(--right)}
+.holdbtn.got{background:var(--accent-soft)}
+.ex-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-top:1px solid var(--line);padding-top:10px;margin-top:2px}
+.ex-foot select,.field select{height:44px;border:1px solid var(--line);border-radius:10px;background:var(--raised);color:var(--ink);font:inherit;padding:0 10px}
+.toggle{border:1px solid var(--line);background:var(--raised);border-radius:10px;padding:10px 12px;min-height:44px;font-size:.95rem}
+.toggle.on{background:var(--right-soft);border-color:var(--right);font-weight:600}
+.note{width:100%;border:1px solid var(--line);border-radius:10px;background:var(--raised);color:var(--ink);font:inherit;font-size:.95rem;padding:10px}
+textarea.note{min-height:70px;resize:vertical}
+.field{display:block;margin-bottom:12px}
+.field>span{display:block;font-weight:600;margin-bottom:6px}
+.field input[type=text],.field input[type=number],.field input:not([type]){width:100%;height:46px;border:1px solid var(--line);border-radius:10px;background:var(--raised);color:var(--ink);font:inherit;padding:0 10px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pair .field input{text-align:center}
+.r-label{color:var(--right)}
+.sticky-foot{position:sticky;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:5;margin-top:16px}
+/* timer ring */
+.ringwrap{position:relative;width:240px;max-width:72vw;aspect-ratio:1;margin:10px auto 14px}
+.ringwrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--line);stroke-width:12}
+.ring-fg{fill:none;stroke:var(--accent);stroke-width:12;stroke-linecap:round;stroke-dasharray:552.9;stroke-dashoffset:0;transition:stroke-dashoffset .2s linear}
+.ring-fg.rest{stroke:var(--rest)}
+.ring-fg.ready{stroke:var(--right)}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.ring-time{font-family:var(--display);font-weight:700;font-size:4.2rem;line-height:1;font-variant-numeric:tabular-nums}
+.ring-phase{font-family:var(--display);font-size:1.5rem;font-weight:600}
+.ring-sub{color:var(--muted);font-size:.95rem}
+/* overlay */
+.overlay{position:fixed;inset:0;z-index:50;background:color-mix(in srgb,var(--bg) 97%,transparent);display:flex;align-items:center;justify-content:center;padding:calc(20px + env(safe-area-inset-top,0px)) 20px calc(20px + env(safe-area-inset-bottom,0px))}
+.overlay-box{width:100%;max-width:420px;text-align:center}
+.overlay-box h3{font-size:1.7rem}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;text-align:left;max-height:80vh;overflow:auto}
+.modal textarea{width:100%;min-height:240px;font-size:.8rem;border:1px solid var(--line);border-radius:10px;background:var(--raised);color:var(--ink);padding:8px}
+/* rest bar */
+.restbar{position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:20;display:flex;justify-content:center;padding:0 10px 8px}
+.restbar-in{position:relative;overflow:hidden;width:100%;max-width:540px;display:flex;align-items:center;gap:8px;background:var(--ink);color:var(--bg);border-radius:14px;padding:8px 10px 8px 16px}
+.rest-fill{position:absolute;left:0;top:0;bottom:0;background:var(--accent);opacity:.45;transition:width .2s linear}
+.restbar-in>*{position:relative}
+.restbar-in strong{font-family:var(--display);font-size:1.9rem;font-variant-numeric:tabular-nums;margin-right:auto;margin-left:6px}
+.restbar-in button{background:transparent;border:1px solid color-mix(in srgb,var(--bg) 40%,transparent);color:var(--bg);border-radius:10px;min-height:44px;min-width:50px;font-weight:600}
+.restbar-in.over{background:var(--accent);color:var(--on-accent)}
+/* nav */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+nav.tabs button{background:none;border:0;height:64px;font-size:.88rem;padding:0 2px;color:var(--muted);font-weight:600;border-top:3px solid transparent}
+nav.tabs button.on{color:var(--ink);border-top-color:var(--accent)}
+/* charts & lists */
+.chart{width:100%;height:auto;display:block}
+.chart text{font-family:var(--body);font-size:10px;fill:var(--muted)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.88rem;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:14px;height:4px;border-radius:2px;vertical-align:middle;margin-right:6px}
+.seg{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:6px 0 14px}
+.seg button{flex:1;border:0;background:var(--raised);min-height:44px;font-weight:600;color:var(--muted)}
+.seg button.on{background:var(--accent);color:var(--on-accent)}
+.bal{margin:10px 0 14px}
+.bal-name{font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.bal-name span{color:var(--muted);font-weight:400;font-size:.9rem}
+.bal-bar{display:grid;grid-template-columns:18px 1fr 44px;gap:8px;align-items:center;margin-top:5px}
+.bal-bar b{font-family:var(--display)}
+.bal-bar .track{height:14px;background:var(--bg);border-radius:7px;overflow:hidden}
+.bal-bar .fill{height:100%;background:var(--accent);border-radius:7px}
+.bal-bar.r b,.bal-bar.r .num{color:var(--right)}
+.bal-bar.r .fill{background:var(--right)}
+.bal-bar .num{font-family:var(--display);font-size:1.1rem;text-align:right}
+table.ext{width:100%;border-collapse:collapse;font-size:.92rem}
+table.ext th{text-align:left;font-weight:600;color:var(--muted);padding:6px 4px;border-bottom:1px solid var(--line)}
+table.ext td{padding:8px 4px;border-bottom:1px solid var(--line)}
+table.ext td.n{text-align:right;font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto}
+.log-item{width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;display:block}
+.log-item strong{display:block}
+.log-detail{background:var(--raised);border:1px solid var(--line);border-top:0;border-radius:0 0 14px 14px;margin:-12px 0 8px;padding:12px 14px;font-size:.92rem}
+.log-detail p{margin:0 0 4px}
+details.card>summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between}
+details.card>summary::after{content:"+";font-family:var(--display);font-size:1.4rem;line-height:1}
+details.card[open]>summary::after{content:"\2212"}
+details.card>summary::-webkit-details-marker{display:none}
+.flag{display:flex;gap:10px;align-items:flex-start;padding:8px 0}
+.flag input{width:22px;height:22px;margin-top:2px;accent-color:var(--danger)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(140px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:600;max-width:90vw}
+.empty{color:var(--muted);text-align:center;padding:24px 10px}
+.prog-item{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+.checks{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.checks label{display:flex;gap:6px;align-items:center}
+.checks input{width:20px;height:20px;accent-color:var(--accent)}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.quick button{background:var(--raised);border:1px solid var(--line);border-radius:14px;padding:10px 8px;min-height:66px;font-weight:600;font-size:.92rem;line-height:1.2}
+.pe{border-top:1px solid var(--line);padding:12px 0}
+.pe:first-of-type{border-top:0}
+.pe h3{font-size:1.25rem}
+.pe.paused h3,.pe.paused .target{opacity:.55}
+.badge{display:inline-block;font-family:var(--body);font-size:.75rem;font-weight:700;border-radius:6px;padding:1px 7px;margin-left:8px;vertical-align:middle;background:var(--warn-soft);border:1px solid var(--right)}
+.pe-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.mini{border:1px solid var(--line);background:var(--raised);border-radius:10px;min-height:42px;min-width:44px;padding:6px 11px;font-size:.92rem;font-weight:600}
+.mini:disabled{opacity:.3}
+.editor{background:var(--raised);border:2px solid var(--accent);border-radius:14px;padding:14px;margin:10px 0}
+.chg{padding:6px 0 6px 12px;border-left:4px solid var(--line);margin:8px 0}
+.chg.add{border-color:var(--accent)}
+.chg.remove{border-color:var(--danger)}
+.chg.change{border-color:var(--right)}
+.chg strong{display:block}
+.chg span{color:var(--muted);font-size:.92rem}
+.cue h3{margin:18px 0 6px;font-size:1.2rem}
+.cue ol,.cue ul{margin:0;padding-left:22px}
+.cue li{margin:5px 0}
+.disclaim{font-size:.88rem;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;margin-top:16px}
+a.btn{text-decoration:none;color:inherit}
+.q-item{border-top:1px solid var(--line);padding:10px 0}
+.q-item p{margin:0 0 4px}
+.rt-grid{display:grid;grid-template-columns:1.3fr 1fr .8fr .8fr 40px;gap:6px;align-items:center;margin-bottom:8px}
+.rt-grid.head{font-size:.85rem;color:var(--muted);font-weight:600;margin-bottom:4px}
+.rt-grid input{width:100%;min-width:0;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--raised);color:var(--ink);font:inherit;font-size:.95rem;padding:0 6px}
+.rt-grid .r-in{border-color:var(--right)}
+.thinking{display:flex;align-items:center;gap:12px;color:var(--muted);padding:6px 0 12px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--accent);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25;transform:scale(.7)}}
+.backlink{background:none;border:0;color:var(--accent);font-weight:600;padding:6px 0;min-height:44px;margin-bottom:2px}
+.field input[type=date],.field input[type=time]{width:100%;height:46px;border:1px solid var(--line);border-radius:10px;background:var(--raised);color:var(--ink);font:inherit;padding:0 10px}
+label.btn{position:relative;overflow:hidden;cursor:pointer}
+.fileov{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
+.pastebox{border:2px dashed var(--line);border-radius:12px;padding:14px;min-height:56px;color:var(--muted);text-align:center;margin-top:10px;outline:none}
+.pastebox:focus{border-color:var(--accent);color:var(--ink)}
+.diag td{vertical-align:top}
+.ok{color:var(--accent);font-weight:700}
+.bad{color:var(--danger);font-weight:700}
+#camv{width:100%;max-height:60vh;border-radius:14px;background:#000;display:block}
+.legq{margin:2px 0 6px}
+.legq-t{font-weight:600;margin:0 0 4px}
+.legpair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sl.leg{margin:2px 0 4px}
+.sl.leg .sl-top output{font-size:2rem}
+.sidetag{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;font-family:var(--display);font-size:1rem;font-weight:700;margin-right:6px;background:var(--accent-soft);color:var(--ink)}
+.sidetag.r{background:var(--right-soft)}
+.sl.z1 output{color:var(--accent)}
+.sl.z1 input{accent-color:var(--accent)}
+.sl.z2 output{color:var(--right)}
+.sl.z2 input{accent-color:var(--right)}
+.sl.z3 output{color:var(--danger)}
+.sl.z3 input{accent-color:var(--danger)}
+.legdiff{font-weight:600;font-size:.95rem;margin:4px 0 16px;padding:8px 12px;border-radius:10px;background:var(--bg)}
+.legdiff.mid{background:var(--warn-soft)}
+.legdiff.bad{background:var(--danger-soft);color:var(--danger)}
+.toggle.l.on{background:var(--accent-soft);border-color:var(--accent)}
+.report h1{font-size:1.8rem}
+.report h2{font-size:1.25rem;margin:20px 0 6px;padding-bottom:4px;border-bottom:2px solid var(--line)}
+.report section p{margin:4px 0}
+.report ol{padding-left:22px;margin:4px 0}
+.rep-note,.rep-src{color:var(--muted);font-size:.9rem}
+.report td.n{white-space:nowrap}
+.rep-bad{color:var(--danger);font-weight:700}
+.rep-foot{margin-top:18px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:8px}
+@media print{nav.tabs,.noprint,.backlink,#rest,#toast{display:none!important}body{background:#fff}main{padding:0;max-width:none}.card.report{border:0;padding:0}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main id="main"></main>
+
+<div id="rest" class="restbar" hidden>
+  <div class="restbar-in" id="rest-in">
+    <div class="rest-fill" id="rest-fill"></div>
+    <span>Rest</span>
+    <strong id="rest-time">1:30</strong>
+    <button data-a="rest-sub" aria-label="Remove 15 seconds">−15</button>
+    <button data-a="rest-add" aria-label="Add 15 seconds">+15</button>
+    <button data-a="rest-skip">Done</button>
+  </div>
+</div>
+
+<div id="hold" class="overlay" hidden>
+  <div class="overlay-box">
+    <h3 id="hold-name"></h3>
+    <div class="ringwrap">
+      <svg viewBox="0 0 200 200" aria-hidden="true"><circle class="ring-bg" cx="100" cy="100" r="88"/><circle id="hold-ring" class="ring-fg ready" cx="100" cy="100" r="88"/></svg>
+      <div class="ring-center"><div class="ring-phase" id="hold-phase">Get set</div><div class="ring-time" id="hold-time">5</div></div>
+    </div>
+    <div class="row">
+      <button class="btn primary" data-a="hold-stop">Stop and log time</button>
+      <button class="btn ghost" data-a="hold-cancel">Cancel</button>
+    </div>
+    <p class="small" style="margin-top:12px">Stopping early logs how long you actually held.</p>
+  </div>
+</div>
+
+<div id="modal" class="overlay" hidden><div class="overlay-box"><div class="modal" id="modal-body"></div></div></div>
+<div id="toast" class="toast" hidden></div>
+
+<nav class="tabs"><div class="in">
+  <button data-a="nav" data-v="home">Today</button>
+  <button data-a="nav" data-v="session">Session</button>
+  <button data-a="nav" data-v="checkin">Check-in</button>
+  <button data-a="nav" data-v="program">Program</button>
+  <button data-a="nav" data-v="trends">Trends</button>
+</div></nav>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- program (from TC_Gym_Program_Sept_2026.xlsx) ---------- */
+const DEFAULT_PROGRAM = {
+  warmup:[
+    {id:"gbe", name:"Glute bridge extender", sets:2, target:"8 reps", kind:"reps", reps:8, rpe:5},
+    {id:"spl", name:"Side plank (short lever)", sets:2, target:"20 s each side", kind:"time", secs:20, rpe:5, sided:true},
+    {id:"fpl", name:"Front plank leg lift", sets:2, target:"30 s", kind:"time", secs:30, rpe:5, notes:"Maintain neutral lumbar spine"},
+    {id:"crab", name:"Crab walk", sets:5, target:"5 m", kind:"distance", rpe:5, notes:"Band around ankles"},
+    {id:"farm", name:"Farmers carry", sets:4, target:"15 m", kind:"distance", rpe:5, notes:"12–15 kg", weight:true, kg:12}
+  ],
+  gym:[
+    {id:"lext", name:"Seated leg extension", sets:2, target:"10–12 reps", kind:"reps", reps:12, rpe:5, weight:true},
+    {id:"shb", name:"Swiss ball hamstring bridge", sets:2, target:"10–12 reps", kind:"reps", reps:12, rpe:5},
+    {id:"rgl", name:"Reverse goblet lunge", sets:2, target:"10–12 reps each side", kind:"reps", reps:12, rpe:5, notes:"5 kg", weight:true, kg:5, sided:true},
+    {id:"rdl", name:"Single leg block RDL", sets:2, target:"6–8 reps each side", kind:"reps", reps:8, rpe:5, notes:"5 kg", weight:true, kg:5, sided:true},
+    {id:"lpd", name:"Lat pull down", sets:2, target:"10–12 reps", kind:"reps", reps:12, rpe:5, weight:true},
+    {id:"icp", name:"Incline chest press", sets:2, target:"10–12 reps", kind:"reps", reps:12, rpe:5, weight:true}
+  ],
+  conditioning:[
+    {id:"A", erg:"Ski", work:45, rest:30, sets:8, rpe:5},
+    {id:"B", erg:"Ski", work:30, rest:15, sets:12, rpe:8},
+    {id:"C", erg:"Assault bike", work:240, rest:60, sets:4, rpe:7},
+    {id:"D", erg:"Assault bike", work:30, rest:15, sets:12, rpe:8},
+    {id:"E", erg:"Bike", work:40, rest:20, sets:10, rpe:8},
+    {id:"F", erg:"Bike", work:300, rest:120, sets:3, rpe:5}
+  ]
+};
+const SIT = [{v:20,l:"Under 30 min"},{v:45,l:"30–60 min"},{v:75,l:"60–90 min"},{v:105,l:"90 min–2 h"},{v:150,l:"Over 2 h"},{v:999,l:"No heaviness from sitting"}];
+const STAND = [{v:10,l:"Under 15 min"},{v:22,l:"15–30 min"},{v:45,l:"30–60 min"},{v:75,l:"Over 60 min"},{v:999,l:"No heaviness from standing"}];
+const WALK = [{v:0,l:"None"},{v:15,l:"Under 30 min"},{v:45,l:"30–60 min"},{v:90,l:"1–2 h"},{v:150,l:"Over 2 h"}];
+const FLAGS = [
+  "Leg weakness getting rapidly worse",
+  "New difficulty walking normally",
+  "New numbness in the groin or saddle area",
+  "New loss of bladder or bowel control",
+  "Severe, rapidly worsening back pain with leg changes"
+];
+
+/* ---------- storage ---------- */
+const LS = {rec:"rl.records.v1", set:"rl.settings.v1", act:"rl.active.v1", tomb:"rl.tombs.v1"};
+function load(k,d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }
+function store(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+const clone = o => JSON.parse(JSON.stringify(o));
+
+const S = {
+  view:"home",
+  records: load(LS.rec, {}),
+  settings: load(LS.set, null) || {program: clone(DEFAULT_PROGRAM), restSec:90, updatedAt:0},
+  active: load(LS.act, null),
+  tombs: load(LS.tomb, {}),
+  checkin:null, histTab:"trends", open:{}, imp:null, edit:null, rt:null, q:{text:"",who:"GP"}, sym:null, guide:null, guideBack:"program", ob:{}, inbox:null, tol:load("rl.tol.v1",null), tolDraft:null, tolQ:0, rep:{days:28, who:"GP"}, flight:load("rl.flight.v1",null)
+};
+function persist(){ store(LS.rec,S.records); store(LS.set,S.settings); store(LS.act,S.active); store(LS.tomb,S.tombs); }
+function saveActive(){ store(LS.act,S.active); }
+function putRecord(r){ r.updatedAt = Date.now(); S.records[r.id] = r; persist(); }
+function delRecord(id){ delete S.records[id]; persist(); }
+function stripMeta(r){ const c = clone(r); delete c._synced; return c; }
+
+/* ---------- helpers ---------- */
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad = n => String(n).padStart(2,"0");
+const iso = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const today = () => iso(new Date());
+const parseD = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y,m-1,d,12); };
+const fmtLong = s => parseD(s).toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long"});
+const fmtShort = s => parseD(s).toLocaleDateString("en-AU",{day:"numeric",month:"short"});
+const mmss = sec => { sec = Math.max(0,Math.ceil(sec)); return Math.floor(sec/60)+":"+pad(sec%60); };
+const uid = () => "s-"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const labelOf = (list,v) => { const o = list.find(x=>x.v===v); return o ? o.l : "Not answered"; };
+function setPath(o,p,v){ const ks = p.split("."); let x = o; for(let k=0;k<ks.length-1;k++){ if(x[ks[k]]==null) x[ks[k]] = /^\d+$/.test(ks[k+1]) ? [] : {}; x = x[ks[k]]; } x[ks[ks.length-1]] = v; }
+function getPath(o,p){ return p.split(".").reduce((x,k)=> x==null ? x : x[k], o); }
+function rootFor(pre){ return ({a:S.active, c:S.checkin, p:S.settings.program, s:S.settings, e:S.edit&&S.edit.draft, t:S.rt, y:S.sym, q:S.q, i:S.imp, r:S.rep, w:S.tolDraft, f:S.flight})[pre] || null; }
+function setBind(b,v){
+  const pre = b[0], path = b.slice(2), root = rootFor(pre); if(!root) return;
+  setPath(root,path,v);
+  if(pre==="a") saveActive();
+  if(pre==="f") saveFlight();
+  if(pre==="p" || pre==="s"){ S.settings.updatedAt = Date.now(); persist(); }
+}
+function recs(types){ return Object.values(S.records).filter(r=>types.includes(r.type)).sort((a,b)=> a.date<b.date?-1 : a.date>b.date?1 : (a.startedAt||0)-(b.startedAt||0)); }
+function toast(msg){ const t = document.getElementById("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(()=>{ t.hidden = true; }, 2600); }
+
+/* ---------- sound, vibration, screen ---------- */
+let AC = null;
+function unlockAudio(){ try{ AC = AC || new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==="suspended") AC.resume(); }catch(e){} }
+function beep(f,d){ try{ if(!AC) return; const o = AC.createOscillator(), g = AC.createGain(); o.frequency.value = f; o.connect(g); g.connect(AC.destination); const t = AC.currentTime; g.gain.setValueAtTime(0.3,t); g.gain.exponentialRampToValueAtTime(0.001,t+d); o.start(t); o.stop(t+d); }catch(e){} }
+function buzz(p){ try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} }
+let wake = null;
+async function keepAwake(on){ try{ if(on && !wake && navigator.wakeLock){ wake = await navigator.wakeLock.request("screen"); wake.addEventListener("release",()=>{ wake = null; }); } else if(!on && wake){ await wake.release(); wake = null; } }catch(e){} }
+
+/* ---------- program week ---------- */
+function programWeek(){
+  const st = recs(["strength"]); const start = S.settings.programStart || (st[0] && st[0].date);
+  if(!start) return null;
+  const w = Math.floor((parseD(today()) - parseD(start)) / (7*864e5)) + 1;
+  return Math.max(1,w);
+}
+
+/* ---------- alerts ---------- */
+function alerts(){
+  const out = []; const cis = recs(["checkin"]); const last = cis[cis.length-1];
+  if(last){
+    const age = (parseD(today()) - parseD(last.date)) / 864e5;
+    if(age <= 2 && last.flags && Object.values(last.flags).some(Boolean)){
+      out.push(`<div class="alert danger"><strong>Get urgent medical assessment</strong>Your check-in on ${esc(fmtShort(last.date))} noted a warning sign. Don't wait for your planned review. For new bladder or bowel changes or saddle numbness, go to an emergency department now.</div>`);
+    }
+    [["strength","Right"],["strengthL","Left"]].forEach(([k,side])=>{
+    const prev = cis.slice(-8,-1).filter(c=>typeof c[k]==="number");
+    if(age <= 2 && prev.length >= 3 && typeof last[k]==="number"){
+      const avg = prev.reduce((s,c)=>s+c[k],0)/prev.length;
+      if(last[k] <= avg - 3){
+        out.push(`<div class="alert warn"><strong>${side} leg feels weaker than usual</strong>You rated it ${last[k]}/10 against a recent average of ${avg.toFixed(1)}. Your plan is to escalate early if weakness worsens, so consider calling your GP.</div>`);
+      }
+    }
+    });
+  }
+  return out.join("");
+}
+
+/* ---------- views ---------- */
+function slider(bind,label,val,lo,hi,isR){
+  const id = "o"+bind.replace(/\W/g,"");
+  return `<label class="sl${isR?" r":""}"><span class="sl-top"><span>${label}</span><output id="${id}">${val}</output></span>
+  <input type="range" min="0" max="10" step="1" value="${val}" data-bind="${bind}" data-out="${id}" data-num="1" aria-label="${esc(label)}">
+  <span class="sl-ends"><span>${lo}</span><span>${hi}</span></span></label>`;
+}
+/* left and right leg ratings, coloured by fatigue */
+const fat = (v,inv) => inv ? 10-(v??0) : (v??0);
+const zoneOf = (v,inv) => { const f = fat(v,inv); return f<=3 ? "z1" : f<=6 ? "z2" : "z3"; };
+function legDiff(vL,vR,inv){
+  if(vL==null || vR==null) return {t:"", c:""};
+  const d = fat(vR,inv) - fat(vL,inv), a = Math.abs(d);
+  if(a<2) return {t:"Left and right about even", c:""};
+  const side = d>0 ? "Right" : "Left";
+  return {t:`${side} ${a} point${a>1?"s":""} ${inv?"weaker":"heavier"} than the other`, c:a>=3?"bad":"mid"};
+}
+function legHalf(side,bind,v,lo,hi,inv){
+  const id = "o"+bind.replace(/\W/g,""), val = v??(inv?10:0);
+  return `<label class="sl leg ${zoneOf(val,inv)}"><span class="sl-top"><span><span class="sidetag${side==="R"?" r":""}">${side}</span>${side==="L"?"Left":"Right"}</span><output id="${id}">${val}</output></span>
+    <input type="range" min="0" max="10" step="1" value="${val}" data-bind="${bind}" data-out="${id}" data-num="1" data-leg="${inv?"inv":"1"}" aria-label="${side==="L"?"Left":"Right"} leg">
+    <span class="sl-ends"><span>${lo}</span><span>${hi}</span></span></label>`;
+}
+function legPair(title,bindL,bindR,vL,vR,lo,hi,inv){
+  const L = vL??(inv?10:0), R = vR??(inv?10:0), d = legDiff(L,R,inv);
+  return `<div class="legq"><p class="legq-t">${title}</p><div class="legpair">${legHalf("L",bindL,L,lo,hi,inv)}${legHalf("R",bindR,R,lo,hi,inv)}</div>
+    <p class="legdiff ${d.c}" data-diff="1">${esc(d.t)}</p></div>`;
+}
+function updLeg(input){
+  const inv = input.dataset.leg==="inv", lab = input.closest(".sl"), q = input.closest(".legq");
+  lab.classList.remove("z1","z2","z3"); lab.classList.add(zoneOf(Number(input.value),inv));
+  const ins = q.querySelectorAll("input[data-leg]"), d = legDiff(Number(ins[0].value),Number(ins[1].value),inv);
+  const el = q.querySelector("[data-diff]"); el.textContent = d.t; el.className = "legdiff "+d.c;
+}
+function symptomSliders(pre,obj){
+  return slider(pre+".back","Back load or pressure",obj.back,"None","Worst")
+    + legPair("Leg heaviness or fatigue",pre+".heavyL",pre+".heavy",obj.heavyL,obj.heavy,"None","Worst",false)
+    + legPair("Leg strength feel",pre+".strengthL",pre+".strength",obj.strengthL,obj.strength,"Gives way","Normal",true);
+}
+function chips(bind,list,cur){
+  return `<div class="chips">${list.map(o=>`<button class="chip${cur===o.v?" on":""}" data-a="chip" data-bind="${bind}" data-val="${o.v}">${esc(o.l)}</button>`).join("")}</div>`;
+}
+function lastSymptoms(){
+  const all = recs(["strength","conditioning","checkin"]).reverse();
+  for(const r of all){
+    if(r.type==="checkin") return {back:r.back??0, heavy:r.peak??0, heavyL:r.peakL??0, strength:r.strength??10, strengthL:r.strengthL??10};
+    if(r.post) return Object.assign({heavyL:0, strengthL:10}, clone(r.post));
+  }
+  return {back:0, heavy:0, heavyL:0, strength:10, strengthL:10};
+}
+function cloudLine(){ const d = lastBackupDays(); return `<p class="cloud" id="cloud">Saved on this phone. ${d===null?"No backup yet":d===0?"Backed up today":`Last backup ${d} day${d>1?"s":""} ago`}</p>`; }
+
+function viewHome(){
+  const t = today(), ci = S.records["c-"+t], wk = programWeek();
+  const sessions = recs(["strength","conditioning"]); const lastS = sessions[sessions.length-1];
+  let html = `<header class="top"><div><h1>Rehab log</h1><p class="sub">${esc(fmtLong(t))}${wk?`<br>Program week ${wk}`:""}</p>${cloudLine()}</div></header>`;
+  html += alerts() + backupBanner();
+  if(S.active){
+    html += `<button class="action main" data-a="nav" data-v="session"><strong>Resume your session</strong><span>${S.active.type==="strength"?"Strength":"Conditioning"} session started ${new Date(S.active.startedAt).toLocaleTimeString("en-AU",{hour:"numeric",minute:"2-digit"})}</span></button>`;
+  } else {
+    html += `<button class="action main" data-a="start-strength"><strong>Start strength session</strong><span>Warm-up and gym exercises, with rest and hold timers</span></button>
+      <button class="action" data-a="start-cond"><strong>Start conditioning</strong><span>Interval timer for sessions A to F</span></button>`;
+  }
+  html += `<button class="action" data-a="nav" data-v="checkin"><strong>${ci?"Edit tonight's check-in":"Evening check-in"}</strong><span>${ci?`Heaviness ${ci.peakL!=null?`L ${ci.peakL} / `:""}R ${ci.peak}. Sitting: ${esc(labelOf(SIT,ci.sit))}`:"About a minute. How the day went while you were at work"}</span></button>`;
+  html += S.tol ? `<button class="action main" data-a="nav" data-v="tol"><strong>${S.tol.pos==="sit"?"Sitting":"Standing"} test running</strong><span>Started ${new Date(S.tol.startedAt).toLocaleTimeString("en-AU",{hour:"numeric",minute:"2-digit"})}. Tap to return to the timer.</span></button>`
+    : `<button class="action" data-a="nav" data-v="tol"><strong>Tolerance test</strong><span>Time how long you can sit or stand before heaviness starts</span></button>`;
+  html += `<div class="quick"><button data-a="sym-new">Log a symptom change</button><button data-a="nav" data-v="questions">Add a question</button><button data-a="rt-new">Add physio results</button></div>`;
+  const openQ = recs(["question"]).filter(q=>!q.answered);
+  if(openQ.length){
+    html += `<button class="action" data-a="nav" data-v="questions"><strong>${openQ.length} open question${openQ.length>1?"s":""}</strong><span>${openQ.slice(0,3).map(q=>esc(q.text.length>60?q.text.slice(0,57)+"…":q.text)).join("<br>")}</span></button>`;
+  }
+  html += S.flight && S.flight.stage!=="setup" ? `<button class="action main" data-a="nav" data-v="flight"><strong>Flight Mode running</strong><span>${S.flight.stage==="break"?"A break is due now":"Tap to return to the break timer"}</span></button>`
+    : `<button class="action" data-a="nav" data-v="flight"><strong>Flight Mode</strong><span>Movement-break timer for long flights</span></button>`;
+  html += `<button class="action" data-a="rep-open"><strong>Clinic report</strong><span>A one-page summary for your GP, physio or neurologist</span></button>`;
+  if(lastS){
+    const d = lastS.pre && lastS.post ? lastS.post.heavy - lastS.pre.heavy : null;
+    html += `<div class="card"><h3>Last session</h3><p class="sub">${esc(fmtLong(lastS.date))}: ${lastS.type==="strength"?"strength":"conditioning "+esc(lastS.cond?lastS.cond.pid:"")}</p>
+      ${d===null?"":`<p>${lastS.pre.heavyL!=null&&lastS.post.heavyL!=null?`Left heaviness ${lastS.pre.heavyL} to ${lastS.post.heavyL}. `:""}Right heaviness ${lastS.pre.heavy} to ${lastS.post.heavy}${d<0?", easier afterwards.":d>0?", heavier afterwards.":", no change."}</p>`}</div>`;
+  }
+  return html;
+}
+
+/* session */
+function buildEx(p,block){
+  const last = lastExLog(p.id); const log = [];
+  for(let j=0;j<p.sets;j++){
+    const pl = last && last.log[j];
+    const pick = (k,def) => pl && pl[k]!=null ? pl[k] : def;
+    const isReps = p.kind==="reps";
+    log.push({
+      reps: isReps && !p.sided ? pick("reps",p.reps) : null,
+      repsL: isReps && p.sided ? pick("repsL",p.reps) : null,
+      repsR: isReps && p.sided ? pick("repsR",p.reps) : null,
+      kg: p.weight ? pick("kg", p.kg!=null ? p.kg : null) : null,
+      secs:null, secsL:null, secsR:null, done:false
+    });
+  }
+  return {pid:p.id, name:p.name, block, kind:p.kind, sided:!!p.sided, weight:!!p.weight, target:p.target, rpeTarget:p.rpe, notes:p.notes||"", secs:p.secs||null, log, rpe:null, rOff:false, note:""};
+}
+function lastExLog(pid){
+  const st = recs(["strength"]).reverse();
+  for(const r of st){ const e = (r.ex||[]).find(x=>x.pid===pid); if(e) return e; }
+  return null;
+}
+function startStrength(){
+  const P = S.settings.program;
+  S.active = {id:uid(), type:"strength", date:today(), startedAt:Date.now(), stage:"pre", pre:lastSymptoms(), post:null, notes:"",
+    ex:[...P.warmup.filter(p=>!p.paused).map(p=>buildEx(p,"Warm-up")), ...P.gym.filter(p=>!p.paused).map(p=>buildEx(p,"Gym"))]};
+  saveActive(); resetTimers(); go("session");
+}
+function startCond(){
+  S.active = {id:uid(), type:"conditioning", date:today(), startedAt:Date.now(), stage:"pre", pre:lastSymptoms(), post:null, notes:"", cond:null};
+  saveActive(); resetTimers(); go("session");
+}
+
+function viewSession(){
+  const a = S.active;
+  if(!a){
+    return `<header class="top"><div><h1>Session</h1><p class="sub">Pick what you're doing today.</p></div></header>
+      <button class="action main" data-a="start-strength"><strong>Strength session</strong><span>Warm-up and gym exercises</span></button>
+      <button class="action" data-a="start-cond"><strong>Conditioning</strong><span>Intervals on the ski, assault bike or bike</span></button>`;
+  }
+  const title = a.type==="strength" ? "Strength session" : "Conditioning";
+  if(a.stage==="pre"){
+    let html = `<header class="top"><div><h1>${title}</h1><p class="sub">Before you start, how are you right now?</p></div></header>
+      <div class="card">${symptomSliders("a:pre",a.pre)}</div>`;
+    if(a.type==="conditioning"){
+      html += `<h2>Which session?</h2>` + S.settings.program.conditioning.map(c=>{
+        const on = a.cond && a.cond.pid===c.id;
+        return `<button class="action${on?" main":""}" data-a="pick-cond" data-id="${esc(c.id)}"><strong>${esc(c.id)}: ${esc(c.erg)}</strong><span>${c.sets} rounds of ${mmss(c.work)} work, ${mmss(c.rest)} easy. Target RPE ${c.rpe}</span></button>`;
+      }).join("");
+    }
+    html += `<div style="margin-top:14px"><button class="btn primary" data-a="begin"${a.type==="conditioning"&&!a.cond?" disabled":""}>Start session</button>
+      <button class="btn ghost" data-a="discard">Discard</button></div>`;
+    return html;
+  }
+  if(a.stage==="post"){
+    return `<header class="top"><div><h1>Finished</h1><p class="sub">How do you feel now?</p></div></header>
+      <div class="card">${symptomSliders("a:post",a.post)}
+      <label class="field"><span>Notes</span><textarea class="note" data-bind="a:notes" placeholder="Anything worth remembering for your physio">${esc(a.notes)}</textarea></label></div>
+      <button class="btn primary" data-a="save-session">Save session</button>
+      <button class="btn ghost" data-a="back-work">Back to exercises</button>`;
+  }
+  return a.type==="strength" ? strengthWork(a) : condWork(a);
+}
+
+function strengthWork(a){
+  let html = `<header class="top"><div><h1>Strength</h1><p class="sub">Tap the circle when a set is done. Rest starts automatically.</p></div></header>`;
+  let block = null;
+  a.ex.forEach((ex,i)=>{
+    if(ex.block!==block){ block = ex.block; html += `<h2>${esc(block)}</h2>`; }
+    html += exCard(ex,i);
+  });
+  html += `<div class="sticky-foot"><button class="btn primary" data-a="finish">Finish session</button></div>`;
+  return html;
+}
+function stepper(bind,val,label){
+  return `<span class="stepper"><button data-a="step" data-bind="${bind}" data-d="-1" aria-label="Fewer ${label}">−</button><span class="v">${val==null?0:val}</span><button data-a="step" data-bind="${bind}" data-d="1" aria-label="More ${label}">+</button></span>`;
+}
+function exCard(ex,i){
+  const done = ex.log.filter(s=>s.done).length;
+  const rows = ex.log.map((s,j)=>{
+    const b = `a:ex.${i}.log.${j}`;
+    let body = "";
+    if(ex.kind==="reps"){
+      body += ex.sided
+        ? `<span class="side"><b>L</b>${stepper(b+".repsL",s.repsL,"left reps")}</span><span class="side r"><b>R</b>${stepper(b+".repsR",s.repsR,"right reps")}</span>`
+        : stepper(b+".reps",s.reps,"reps");
+    } else if(ex.kind==="time"){
+      if(ex.sided){
+        body += `<button class="holdbtn${s.secsL!=null?" got":""}" data-a="hold" data-i="${i}" data-j="${j}" data-side="L">${s.secsL!=null?`L ${s.secsL} s`:`Hold left ${ex.secs} s`}</button>`;
+        body += `<button class="holdbtn r${s.secsR!=null?" got":""}" data-a="hold" data-i="${i}" data-j="${j}" data-side="R">${s.secsR!=null?`R ${s.secsR} s`:`Hold right ${ex.secs} s`}</button>`;
+      } else {
+        body += `<button class="holdbtn${s.secs!=null?" got":""}" data-a="hold" data-i="${i}" data-j="${j}" data-side="">${s.secs!=null?`Held ${s.secs} s`:`Start ${ex.secs} s hold`}</button>`;
+      }
+    } else {
+      body += `<span class="small">${esc(ex.target)}</span>`;
+    }
+    if(ex.weight) body += `<label class="kg"><input type="number" inputmode="decimal" step="0.5" value="${s.kg==null?"":s.kg}" data-bind="${b}.kg" data-num="1" aria-label="Weight in kg">kg</label>`;
+    return `<div class="set"><span class="set-n">Set ${j+1}</span><div class="set-body">${body}</div><button class="done${s.done?" on":""}" data-a="done" data-i="${i}" data-j="${j}" aria-label="Set ${j+1} done" aria-pressed="${s.done}">${s.done?"✓":""}</button></div>`;
+  }).join("");
+  const rpeOpts = `<option value="">How hard? (RPE)</option>` + Array.from({length:10},(_,k)=>`<option value="${k+1}"${ex.rpe===k+1?" selected":""}>RPE ${k+1}</option>`).join("");
+  return `<div class="ex${done===ex.log.length?" complete":""}">
+    <div class="ex-head"><div><h3>${esc(ex.name)}</h3><p class="target">${ex.log.length} × ${esc(ex.target)}${ex.rpeTarget?`, RPE ${ex.rpeTarget}`:""}${ex.notes?`. ${esc(ex.notes)}`:""}</p></div><span class="count">${done}/${ex.log.length}</span></div>
+    ${rows}
+    <div class="ex-foot">
+      <select data-bind="a:ex.${i}.rpe" data-num="1" aria-label="Actual effort">${rpeOpts}</select>
+      <button class="toggle l${ex.lOff?" on":""}" data-a="loff" data-i="${i}" aria-pressed="${!!ex.lOff}">Left felt off</button>
+      <button class="toggle${ex.rOff?" on":""}" data-a="roff" data-i="${i}" aria-pressed="${ex.rOff}">Right felt off</button>
+      <button class="toggle" data-a="guide" data-src="a" data-i="${i}">Form guide</button>
+      <input class="note" data-bind="a:ex.${i}.note" value="${esc(ex.note)}" placeholder="Note (optional)">
+    </div></div>`;
+}
+
+function condWork(a){
+  const c = a.cond;
+  const phase = T.mode==="interval" ? T.phase : null;
+  const left = T.mode==="interval" ? (T.running ? T.endAt-Date.now() : T.left) : c.work*1000;
+  const phaseLabel = {ready:"Get ready", work:"Work", rest:"Easy", done:"All rounds done"}[phase] || "Ready when you are";
+  const ringCls = phase==="rest" ? "rest" : phase==="ready" ? "ready" : "";
+  const frac = phase && phase!=="done" && T.dur ? left/T.dur : 1;
+  const ctrl = !phase || phase==="done"
+    ? `<button class="btn primary" data-a="iv-start">${phase==="done"?"Run again":"Start intervals"}</button>`
+    : T.running ? `<button class="btn" data-a="iv-pause">Pause</button>` : `<button class="btn primary" data-a="iv-start">Resume</button>`;
+  return `<header class="top"><div><h1>${esc(c.pid)}: ${esc(c.erg)}</h1><p class="sub">${c.sets} rounds of ${mmss(c.work)} work, ${mmss(c.rest)} easy. Target RPE ${c.rpeTarget}.</p></div></header>
+    <div class="card">
+      <div class="ringwrap"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="ring-bg" cx="100" cy="100" r="88"/><circle id="iv-ring" class="ring-fg ${ringCls}" cx="100" cy="100" r="88" style="stroke-dashoffset:${(552.9*(1-Math.max(0,Math.min(1,frac)))).toFixed(1)}"/></svg>
+        <div class="ring-center"><div class="ring-phase" id="iv-phase">${phaseLabel}</div><div class="ring-time" id="iv-time">${phase==="done"?"✓":mmss(left/1000)}</div><div class="ring-sub" id="iv-set">Round ${Math.min(T.set||1,c.sets)} of ${c.sets}</div></div></div>
+      <div class="row">${ctrl}${phase && phase!=="done" ? `<button class="btn ghost" data-a="iv-reset">Reset</button>`:""}</div>
+      <p class="small" style="margin-top:10px">Beeps count down the last 3 seconds of each phase. Your screen stays on while it runs.</p>
+    </div>
+    <div class="card">
+      <p style="font-weight:600">Rounds completed</p>${stepper("a:cond.done",c.done,"rounds")}
+      <div style="margin-top:14px"><select class="note" data-bind="a:cond.rpe" data-num="1" aria-label="Actual effort"><option value="">How hard was it? (RPE)</option>${Array.from({length:10},(_,k)=>`<option value="${k+1}"${c.rpe===k+1?" selected":""}>RPE ${k+1}</option>`).join("")}</select></div>
+      <div class="row" style="margin-top:12px"><button class="toggle l${c.lOff?" on":""}" data-a="loff-c" aria-pressed="${!!c.lOff}">Left felt off</button><button class="toggle${c.rOff?" on":""}" data-a="roff-c" aria-pressed="${!!c.rOff}">Right felt off</button></div>
+    </div>
+    <button class="btn primary" data-a="finish">Finish session</button>`;
+}
+
+/* check-in */
+function openCheckin(){
+  const id = "c-"+today();
+  if(S.records[id]) S.checkin = clone(S.records[id]);
+  else {
+    const prev = recs(["checkin"]).pop();
+    S.checkin = {id, type:"checkin", date:today(), sit:null, stand:null, walk:null,
+      peak: prev ? prev.peak : 0, peakL: prev ? prev.peakL??0 : 0, back: prev ? prev.back : 0, strength: prev ? prev.strength : 10, strengthL: prev ? prev.strengthL??10 : 10,
+      meds:{celecoxib:false, paracetamol:false}, homeEx:false, test:{}, flags:{}, notes:"", _fromPrev:!!prev};
+  }
+}
+function viewCheckin(){
+  if(!S.checkin || S.checkin.date!==today() && !S.records[S.checkin.id]) openCheckin();
+  const c = S.checkin, saved = !!S.records[c.id];
+  const flagged = Object.values(c.flags||{}).some(Boolean);
+  const t = c.test || {};
+  const num = (bind,v,label,r) => `<label class="field"><span${r?' class="r-label"':""}>${label}</span><input type="number" inputmode="numeric" value="${v==null?"":v}" data-bind="${bind}" data-num="1"></label>`;
+  return `<header class="top"><div><h1>Check-in</h1><p class="sub">${esc(fmtLong(c.date))}. Think back over your day.</p></div></header>
+  ${c._fromPrev && !saved ? `<p class="small">The sliders start where you left them last time. Move whatever changed.</p>`:""}
+  <div class="card">
+    <div class="q"><p>How long could you sit before heaviness started?</p>${chips("c:sit",SIT,c.sit)}</div>
+    <div class="q"><p>How long could you stand still before heaviness started?</p>${chips("c:stand",STAND,c.stand)}</div>
+    <div class="q"><p>How much did you walk today?</p>${chips("c:walk",WALK,c.walk)}</div>
+  </div>
+  <div class="card">
+    ${legPair("Worst leg heaviness or fatigue today","c:peakL","c:peak",c.peakL,c.peak,"None","Worst",false)}
+    ${legPair("Leg strength feel","c:strengthL","c:strength",c.strengthL,c.strength,"Gives way","Normal",true)}
+    ${slider("c:back","Background back pain",c.back,"None","Worst")}
+  </div>
+  <div class="card"><p style="font-weight:600">Today I took or did</p>
+    <div class="checks">
+      <label><input type="checkbox" data-bind="c:meds.celecoxib"${c.meds.celecoxib?" checked":""}>Celecoxib</label>
+      <label><input type="checkbox" data-bind="c:meds.paracetamol"${c.meds.paracetamol?" checked":""}>Paracetamol</label>
+      <label><input type="checkbox" data-bind="c:homeEx"${c.homeEx?" checked":""}>Home physio exercises</label>
+    </div>
+  </div>
+  <details class="card"${t.stsL!=null?" open":""}><summary>Weekly self-test and physio results</summary>
+    <p class="small" style="margin-top:10px">Optional. Use tests your physio is happy with, done the same way each week.</p>
+    <p style="font-weight:600;margin-top:10px">Single-leg sit to stand (reps in 30 s)</p>
+    <div class="pair">${num("c:test.stsL",t.stsL,"Left")}${num("c:test.stsR",t.stsR,"Right",true)}</div>
+    <p style="font-weight:600">Single-leg bridge (reps)</p>
+    <div class="pair">${num("c:test.brL",t.brL,"Left")}${num("c:test.brR",t.brR,"Right",true)}</div>
+    <p style="font-weight:600">Single-leg calf raise (reps)</p>
+    <div class="pair">${num("c:test.calfL",t.calfL,"Left")}${num("c:test.calfR",t.calfR,"Right",true)}</div>
+    <p style="font-weight:600">Toe raise, heels down (reps)</p>
+    <div class="pair">${num("c:test.toeL",t.toeL,"Left")}${num("c:test.toeR",t.toeR,"Right",true)}</div>
+    <p class="small">Ask your physio how they want calf and toe raises done, such as tempo, range and support, so your numbers match their testing.</p>
+    <p class="small">Physio measurements, like hamstring force and how far the knee is short of straight, have their own form.</p>
+    <button class="btn" data-a="rt-new">Add physio test results</button>
+  </details>
+  <details class="card"${flagged?" open":""}><summary>Warning signs</summary>
+    <p class="small" style="margin-top:10px">Tick anything that's new today.</p>
+    ${FLAGS.map((f,k)=>`<label class="flag"><input type="checkbox" data-bind="c:flags.${k}" data-rerender="1"${c.flags&&c.flags[k]?" checked":""}><span>${esc(f)}</span></label>`).join("")}
+    ${flagged?`<div class="alert danger" style="margin-top:10px"><strong>Get urgent medical assessment</strong>Don't wait for your planned review. For new bladder or bowel changes or saddle numbness, go to an emergency department now.</div>`:""}
+  </details>
+  <div class="card"><label class="field"><span>Notes</span><textarea class="note" data-bind="c:notes" placeholder="Anything unusual about today">${esc(c.notes)}</textarea></label></div>
+  <button class="btn primary" data-a="ci-save">${saved?"Update check-in":"Save check-in"}</button>`;
+}
+
+/* trends */
+function dayList(n){ const out = [], d = new Date(); d.setHours(12,0,0,0); for(let k=n-1;k>=0;k--){ const x = new Date(d); x.setDate(d.getDate()-k); out.push(iso(x)); } return out; }
+function lineChart(days, series, max, label, band){
+  const W=340,H=160,pl=24,pr=8,pt=10,pb=22,iw=W-pl-pr,ih=H-pt-pb;
+  const X = k => pl + (days.length<2 ? 0 : k*iw/(days.length-1));
+  const Y = v => pt + ih - (v/max)*ih;
+  let g = band ? `<rect x="${pl}" y="${Y(band[1])}" width="${iw}" height="${Y(band[0])-Y(band[1])}" style="fill:var(--danger-soft)"/><text x="${W-pr-4}" y="${Y(band[1])+11}" text-anchor="end" style="fill:var(--danger)">fatigue zone</text>` : "";
+  [0,max/2,max].forEach(v=>{ g += `<line x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)" stroke-width="1"/><text x="${pl-5}" y="${Y(v)+3}" text-anchor="end">${v}</text>`; });
+  [0,Math.floor((days.length-1)/2),days.length-1].forEach((k,n)=>{ g += `<text x="${X(k)}" y="${H-6}" text-anchor="${["start","middle","end"][n]}">${esc(fmtShort(days[k]))}</text>`; });
+  series.forEach(s=>{
+    let d = "", pen = false;
+    days.forEach((day,k)=>{ const v = s.map[day]; if(v==null){ pen = false; return; } d += (pen?"L":"M")+X(k).toFixed(1)+" "+Y(v).toFixed(1)+" "; pen = true; });
+    g += `<path d="${d}" fill="none" style="stroke:${s.color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+    days.forEach((day,k)=>{ const v = s.map[day]; if(v!=null) g += `<circle cx="${X(k)}" cy="${Y(v)}" r="3.5" style="fill:${s.color}"/>`; });
+  });
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}">${g}</svg>
+    <div class="legend">${series.map(s=>`<span><i style="background:${s.color}"></i>${esc(s.name)}</span>`).join("")}</div>`;
+}
+function barChart(items, min, max, label){
+  const W=340,H=150,pl=24,pr=8,pt=10,pb=22,iw=W-pl-pr,ih=H-pt-pb;
+  const Y = v => pt + ih - ((v-min)/(max-min))*ih; const zero = Y(Math.max(min,0));
+  const bw = Math.min(28, iw/Math.max(items.length,1) - 4);
+  let g = "";
+  const ticks = min<0 ? [min,0,max] : [min,(min+max)/2,max];
+  ticks.forEach(v=>{ g += `<line x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)" stroke-width="1"/><text x="${pl-5}" y="${Y(v)+3}" text-anchor="end">${v}</text>`; });
+  items.forEach((it,k)=>{
+    const cx = pl + (k+0.5)*iw/items.length; const y = Y(Math.max(min,Math.min(max,it.v)));
+    g += `<rect x="${(cx-bw/2).toFixed(1)}" y="${Math.min(y,zero).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1,Math.abs(zero-y)).toFixed(1)}" rx="3" style="fill:${it.color}"/>`;
+    if(items.length<=14 || k%2===0) g += `<text x="${cx}" y="${H-6}" text-anchor="middle">${esc(it.l)}</text>`;
+  });
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}">${g}</svg>`;
+}
+function balRow(name, L, R, unit){
+  if(L==null || R==null) return "";
+  const m = Math.max(L,R,1); const pct = L>0 ? Math.round(R/L*100) : null;
+  return `<div class="bal"><div class="bal-name">${esc(name)}<span>${pct==null?"":`Right is ${pct}% of left`}</span></div>
+    <div class="bal-bar"><b>L</b><div class="track"><div class="fill" style="width:${L/m*100}%"></div></div><span class="num">${L}${unit||""}</span></div>
+    <div class="bal-bar r"><b>R</b><div class="track"><div class="fill" style="width:${R/m*100}%"></div></div><span class="num">${R}${unit||""}</span></div></div>`;
+}
+function viewTrends(){
+  let html = `<header class="top"><div><h1>Trends</h1><p class="sub">What's changing, and what helps.</p></div></header>
+    <div class="seg"><button class="${S.histTab==="trends"?"on":""}" data-a="hist" data-v="trends">Trends</button><button class="${S.histTab==="log"?"on":""}" data-a="hist" data-v="log">Log</button></div>`;
+  return html + (S.histTab==="log" ? viewLog() : trendsBody() + `<button class="btn" style="margin-top:6px" data-a="claude-data">Copy my data for Claude</button>`);
+}
+function trendsBody(){
+  const cis = recs(["checkin"]), ss = recs(["strength","conditioning"]), st = recs(["strength"]), rts = recs(["retest"]);
+  if(!cis.length && !ss.length && !rts.length && !recs(["tolerance"]).length) return `<div class="empty">Log a few check-ins and sessions, and your trends show up here.</div>`;
+  let html = "";
+  if(rts.length){
+    const last = rts[rts.length-1];
+    const keys = []; rts.forEach(r=>r.rows.forEach(x=>{ const k = `${x.test} ${x.pos}`.trim(); if(x.L!=null && x.R!=null && !keys.includes(k)) keys.push(k); }));
+    const pctOf = (r,k) => { const x = r.rows.find(x=>`${x.test} ${x.pos}`.trim()===k); return x && x.L && x.R!=null ? Math.round(x.R/x.L*100)+"%" : "–"; };
+    html += `<div class="card"><h3>Physio strength tests</h3><p class="small">Latest from ${esc(fmtShort(last.date))}${last.units?`, in ${esc(last.units)}`:""}.</p>
+      ${last.rows.map(x=>balRow(`${x.test} ${x.pos}`.trim(), x.L, x.R)).join("")}
+      ${last.extDeficit!=null?`<p>Right knee short of straight: <strong style="display:inline">${last.extDeficit}°</strong></p>`:""}
+      ${rts.length>1?`<p class="small" style="margin-top:10px">Right as a percentage of left over time. Closer to 100% is more even.</p><div class="tablewrap"><table class="ext"><tr><th>Date</th>${keys.map(k=>`<th class="n">${esc(k)}</th>`).join("")}<th class="n">Knee</th></tr>
+        ${[...rts].reverse().map(r=>`<tr><td>${esc(fmtShort(r.date))}</td>${keys.map(k=>`<td class="n">${pctOf(r,k)}</td>`).join("")}<td class="n">${r.extDeficit!=null?r.extDeficit+"°":"–"}</td></tr>`).join("")}</table></div>`:""}
+      <button class="btn" style="margin-top:12px;min-height:44px" data-a="rt-new">Add new results</button></div>`;
+  }
+  const days = dayList(28);
+  if(cis.length){
+    const hL = {}, hR = {}, sL = {}, sR = {}, diff = [];
+    cis.forEach(c=>{ hR[c.date] = c.peak; sR[c.date] = c.strength; if(c.peakL!=null) hL[c.date] = c.peakL; if(c.strengthL!=null) sL[c.date] = c.strengthL;
+      if(c.peakL!=null && c.peak!=null) diff.push({date:c.date, d:c.peak-c.peakL}); });
+    html += `<div class="card"><h3>Leg heaviness, last 4 weeks</h3><p class="small">Worst of the day, from your evening check-ins. Lower is better. The shaded band is 7 and above.</p>
+      ${lineChart(days,[{name:"Left",map:hL,color:"var(--accent)"},{name:"Right",map:hR,color:"var(--right)"}],10,"Leg heaviness, left and right, over 28 days",[7,10])}</div>
+      <div class="card"><h3>Leg strength feel, last 4 weeks</h3><p class="small">Higher is better. The shaded band is 3 and below.</p>
+      ${lineChart(days,[{name:"Left",map:sL,color:"var(--accent)"},{name:"Right",map:sR,color:"var(--right)"}],10,"Leg strength feel, left and right, over 28 days",[0,3])}</div>`;
+    const dd = diff.slice(-14);
+    if(dd.length){
+      html += `<div class="card"><h3>Difference between legs</h3><p class="small">Right heaviness minus left. Above the line means the right felt heavier. Red is a gap of 3 or more.</p>
+        ${barChart(dd.map(x=>({v:Math.max(-6,Math.min(6,x.d)),l:fmtShort(x.date).split(" ")[0],color:Math.abs(x.d)>=3?"var(--danger)":Math.abs(x.d)>=2?"var(--right)":"var(--accent)"})),-6,6,"Difference in heaviness between legs")}</div>`;
+    }
+    const sits = cis.filter(c=>c.sit!=null).slice(-14);
+    if(sits.length){
+      html += `<div class="card"><h3>Sitting before heaviness starts</h3><p class="small">Minutes, last ${sits.length} check-ins. A full-height bar means no heaviness from sitting.</p>
+        ${barChart(sits.map(c=>({v:Math.min(c.sit,180),l:fmtShort(c.date).split(" ")[0],color:"var(--accent)"})),0,180,"Sitting tolerance")}</div>`;
+    }
+  }
+  const mp = medPattern(cis);
+  if(mp.length) html += `<div class="card"><h3>Medication and heaviness</h3><p class="small">Average scores on days you took each one versus days you didn't. This shows a pattern, not a cause: you may take medication on days that were already worse.</p>${medTable(mp)}</div>`;
+  else if(cis.length) html += `<div class="card"><h3>Medication and heaviness</h3><p class="small">Shows once you have at least 3 check-ins with and 3 without each medication.</p></div>`;
+  const tols = recs(["tolerance"]);
+  if(tols.length){
+    const bars = p => { const t = tols.filter(r=>r.pos===p).slice(-14); if(!t.length) return "";
+      const mx = Math.max(30, ...t.map(r=>r.minutes)); const top = Math.ceil(mx/30)*30;
+      return `<p style="font-weight:600;margin-top:10px">${p==="sit"?"Sitting":"Standing still"}${tolStats(p)?`: median ${fmtMin(tolStats(p).median)} over the last ${tolStats(p).n}`:""}</p>`
+        + barChart(t.map(r=>({v:r.minutes, l:fmtShort(r.date).split(" ")[0], color:r.endedBy==="onset"?"var(--accent)":"var(--rest)"})),0,top,"Timed tolerance tests"); };
+    html += `<div class="card"><h3>Timed tolerance tests</h3><p class="small">Minutes before heaviness started. Grey bars ended without heaviness, so the real figure is at least that long.</p>${bars("sit")}${bars("stand")}
+      <button class="btn" style="margin-top:12px;min-height:44px" data-a="nav" data-v="tol">New test</button></div>`;
+  }
+  const eff = ss.filter(r=>r.pre && r.post).slice(-12);
+  if(eff.length){
+    const effBars = k => barChart(eff.map(r=>{ const d = (r.post[k]??0) - (r.pre[k]??0); return {v:d,l:fmtShort(r.date).split(" ")[0],color:d>0?"var(--danger)":"var(--accent)"}; }),-5,5,"Session effect on heaviness");
+    const hasL = eff.some(r=>r.pre.heavyL!=null);
+    html += `<div class="card"><h3>How sessions change leg heaviness</h3><p class="small">After minus before. Below the line means you felt lighter afterwards.</p>
+      ${hasL?`<p style="font-weight:600;margin-top:8px">Left</p>${effBars("heavyL")}<p style="font-weight:600;margin-top:8px">Right</p>`:""}${effBars("heavy")}</div>`;
+  }
+  // left / right
+  let bal = "";
+  const lastTest = [...cis].reverse().find(c=>c.test && Object.values(c.test).some(v=>v!=null));
+  if(lastTest){
+    const t = lastTest.test;
+    bal += balRow("Single-leg sit to stand",t.stsL,t.stsR) + balRow("Single-leg bridge",t.brL,t.brR) + balRow("Single-leg calf raise",t.calfL,t.calfR) + balRow("Toe raise",t.toeL,t.toeR) + balRow("Physio hamstring force",t.hamL,t.hamR);
+  }
+  const lastSt = st[st.length-1];
+  if(lastSt){
+    lastSt.ex.filter(e=>e.sided && e.kind==="reps").forEach(e=>{
+      const done = e.log.filter(s=>s.done); if(!done.length) return;
+      bal += balRow(e.name+" (reps, last session)", done.reduce((a,s)=>a+(s.repsL||0),0), done.reduce((a,s)=>a+(s.repsR||0),0));
+    });
+    lastSt.ex.filter(e=>e.sided && e.kind==="time").forEach(e=>{
+      const sL = e.log.map(s=>s.secsL).filter(v=>v!=null), sR = e.log.map(s=>s.secsR).filter(v=>v!=null);
+      if(sL.length && sR.length) bal += balRow(e.name+" (best hold, last session)", Math.max(...sL), Math.max(...sR), " s");
+    });
+  }
+  if(bal) html += `<div class="card"><h3>Left and right</h3>${lastTest?`<p class="small">Self-test from ${esc(fmtShort(lastTest.date))}.</p>`:""}${bal}</div>`;
+  // exercise table
+  if(st.length){
+    const agg = {};
+    st.forEach(r=>r.ex.forEach(e=>{
+      if(!e.log.some(s=>s.done)) return;
+      const a = agg[e.pid] || (agg[e.pid] = {name:e.name, n:0, off:0, loff:0, rpe:[]});
+      a.n++; if(e.rOff) a.off++; if(e.lOff) a.loff++; if(e.rpe) a.rpe.push(e.rpe);
+    }));
+    const rows = Object.values(agg).sort((a,b)=>b.off/b.n - a.off/a.n);
+    if(rows.length){
+      html += `<div class="card"><h3>Exercises</h3><p class="small">How often each leg felt off. Sorted by the right leg.</p><div class="tablewrap"><table class="ext">
+        <tr><th>Exercise</th><th class="n">Done</th><th class="n">Left off</th><th class="n">Right off</th><th class="n">Avg RPE</th></tr>
+        ${rows.map(a=>`<tr><td>${esc(a.name)}</td><td class="n">${a.n}</td><td class="n">${a.loff}</td><td class="n">${a.off}</td><td class="n">${a.rpe.length?(a.rpe.reduce((x,y)=>x+y,0)/a.rpe.length).toFixed(1):"–"}</td></tr>`).join("")}
+      </table></div></div>`;
+    }
+  }
+  return html;
+}
+function hvText(r){
+  const R = `${r.pre.heavy} to ${r.post?r.post.heavy:"?"}`;
+  return r.pre.heavyL!=null ? `Heaviness L ${r.pre.heavyL} to ${r.post?r.post.heavyL??"?":"?"}, R ${R}` : `Heaviness ${R}`;
+}
+function viewLog(){
+  const all = recs(["strength","conditioning","checkin","retest","symptom","tolerance","flight"]).reverse();
+  if(!all.length) return `<div class="empty">Nothing logged yet. Start a session or do tonight's check-in.</div>`;
+  return all.map(r=>{
+    let title, sub, detail = "";
+    if(r.type==="checkin"){
+      title = "Evening check-in"; sub = `Heaviness ${r.peakL!=null?`L ${r.peakL} / `:""}R ${r.peak}. Strength ${r.strengthL!=null?`L ${r.strengthL} / `:""}R ${r.strength}. Sitting: ${labelOf(SIT,r.sit)}`;
+      detail = `<p>Standing: ${esc(labelOf(STAND,r.stand))}. Walking: ${esc(labelOf(WALK,r.walk))}.</p><p>Back pain ${r.back}/10.${r.meds&&r.meds.celecoxib?" Celecoxib.":""}${r.meds&&r.meds.paracetamol?" Paracetamol.":""}${r.homeEx?" Home exercises done.":""}</p>${r.notes?`<p>${esc(r.notes)}</p>`:""}`;
+    } else if(r.type==="retest"){
+      title = "Physio test results"; sub = r.rows.filter(x=>x.L!=null&&x.R!=null).map(x=>`${x.test} ${x.pos}: ${x.L} / ${x.R}`).join(", ") || "No measurements";
+      detail = `<p style="white-space:pre-line">${esc(retestText(r))}</p><button class="btn" style="min-height:44px;margin-top:8px" data-a="rt-edit" data-id="${esc(r.id)}">Edit results</button>`;
+    } else if(r.type==="flight"){
+      title = "Flight"; sub = `${fmtMin(r.minutes)}, ${r.breaks.filter(b=>!b.skipped).length} breaks`;
+      detail = `<p>${esc(flightSummary(r))}</p>${r.note?`<p>${esc(r.note)}</p>`:""}`;
+    } else if(r.type==="tolerance"){
+      title = r.pos==="sit" ? "Sitting test" : "Standing test"; sub = tolLabel(r)+(r.ctx?`, ${r.ctx.toLowerCase()}`:"");
+      detail = `<p>Heaviness at the end: left ${r.heavyL??"–"}, right ${r.heavyR??"–"}.</p>${r.note?`<p>${esc(r.note)}</p>`:""}`;
+    } else if(r.type==="symptom"){
+      title = "Symptom change"; sub = `${(r.what||[]).join(", ")}${r.doing&&r.doing.length?`, while ${r.doing.join(", ").toLowerCase()}`:""}${r.time?`. ${r.time}`:""}`;
+      detail = `${r.lasted?`<p>Lasted: ${esc(r.lasted.toLowerCase())}.</p>`:""}${r.note?`<p>${esc(r.note)}</p>`:""}`;
+    } else if(r.type==="strength"){
+      const tot = r.ex.reduce((a,e)=>a+e.log.length,0), dn = r.ex.reduce((a,e)=>a+e.log.filter(s=>s.done).length,0);
+      title = "Strength session"; sub = `${dn} of ${tot} sets. ${hvText(r)}`;
+      detail = r.ex.map(e=>{
+        const parts = e.log.filter(s=>s.done).map(s=> e.kind==="reps" ? (e.sided?`L${s.repsL}/R${s.repsR}`:`${s.reps}`)+(s.kg!=null?` @ ${s.kg} kg`:"") : e.kind==="time" ? (e.sided?`L${s.secsL??"–"}s/R${s.secsR??"–"}s`:`${s.secs??"–"}s`) : "done"+(s.kg!=null?` @ ${s.kg} kg`:""));
+        return `<p><strong style="display:inline">${esc(e.name)}</strong>: ${parts.length?esc(parts.join(", ")):"skipped"}${e.rpe?`, RPE ${e.rpe}`:""}${e.lOff?", left leg felt off":""}${e.rOff?", right leg felt off":""}${e.note?`. ${esc(e.note)}`:""}</p>`;
+      }).join("") + (r.notes?`<p>${esc(r.notes)}</p>`:"");
+    } else {
+      title = `Conditioning ${r.cond.pid}: ${r.cond.erg}`; sub = `${r.cond.done||0} of ${r.cond.sets} rounds${r.cond.rpe?`, RPE ${r.cond.rpe}`:""}. ${hvText(r)}`;
+      detail = `${r.cond.lOff?"<p>Left leg felt off.</p>":""}${r.cond.rOff?"<p>Right leg felt off.</p>":""}${r.notes?`<p>${esc(r.notes)}</p>`:""}`;
+    }
+    const open = S.open[r.id];
+    return `<button class="log-item" data-a="rec-toggle" data-id="${esc(r.id)}" aria-expanded="${!!open}"><span class="small">${esc(fmtLong(r.date))}</span><strong>${esc(title)}</strong><span class="small">${esc(sub)}</span></button>
+      ${open?`<div class="log-detail">${detail}<button class="btn danger" style="margin-top:10px;min-height:44px" data-a="rec-del" data-id="${esc(r.id)}">Delete this entry</button></div>`:""}`;
+  }).join("");
+}
+
+/* ---------- program versions and changes ---------- */
+const BLOCKN = {warmup:"Warm-up", gym:"Gym", conditioning:"Conditioning", all:"Program"};
+const norm = s => String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+const BOOLF = {sided:1, weight:1, paused:1};
+const EXF = [["sets","Sets"],["target","Target"],["kind","Type"],["reps","Reps"],["secs","Hold"],["rpe","RPE"],["kg","Weight"],["notes","Notes"],["sided","Each side"],["weight","Log weight"],["paused","Paused"]];
+const CONDF = [["erg","Machine"],["work","Work"],["rest","Easy"],["sets","Rounds"],["rpe","RPE"]];
+function fmtVal(k,v){
+  if(BOOLF[k]) return v ? "yes" : "no";
+  if(v==null || v==="") return "none";
+  if(k==="secs") return v+" s"; if(k==="kg") return v+" kg";
+  if(k==="work" || k==="rest") return mmss(v);
+  if(k==="kind") return {reps:"reps", time:"timed hold", distance:"distance"}[v] || v;
+  return String(v);
+}
+function fieldDiff(a,b,fields){
+  const out = [];
+  fields.forEach(([k,l])=>{
+    const same = BOOLF[k] ? !!a[k]===!!b[k] : looseText(a[k])===looseText(b[k]);
+    if(!same) out.push(`${l} ${fmtVal(k,a[k])} to ${fmtVal(k,b[k])}`);
+  });
+  return out;
+}
+const looseText = v => String(v??"").toLowerCase().replace(/[\u2012-\u2015-]/g,"-").replace(/\s*-\s*/g,"-").replace(/\bseconds?\b|\bsecs?\b/g,"s").replace(/\s+/g," ").trim();
+const condName = c => `Session ${c.id}: ${c.erg}`;
+function progDiff(o,n){
+  const out = [];
+  ["warmup","gym"].forEach(b=>{
+    const om = new Map(o[b].map(x=>[norm(x.name),x])), seen = new Set();
+    n[b].forEach(x=>{
+      const k = norm(x.name), m = om.get(k);
+      if(!m) out.push({kind:"add", block:b, name:x.name, details:[`${x.sets} × ${x.target}`]});
+      else { seen.add(k); const d = fieldDiff(m,x,EXF); if(d.length) out.push({kind:"change", block:b, name:x.name, details:d}); }
+    });
+    o[b].forEach(x=>{ if(!seen.has(norm(x.name))) out.push({kind:"remove", block:b, name:x.name}); });
+  });
+  const om = new Map(o.conditioning.map(x=>[norm(x.id),x])), seen = new Set();
+  n.conditioning.forEach(x=>{
+    const k = norm(x.id), m = om.get(k);
+    if(!m) out.push({kind:"add", block:"conditioning", name:condName(x)});
+    else { seen.add(k); const d = fieldDiff(m,x,CONDF); if(d.length) out.push({kind:"change", block:"conditioning", name:condName(x), details:d}); }
+  });
+  o.conditioning.forEach(x=>{ if(!seen.has(norm(x.id))) out.push({kind:"remove", block:"conditioning", name:condName(x)}); });
+  return out;
+}
+function chgRow(c, noBlock){
+  const verb = {add:"Added", remove:"Removed", change:"Changed", move:"Moved"}[c.kind] || "Changed";
+  const cls = c.kind==="add" ? "add" : c.kind==="remove" ? "remove" : "change";
+  return `<div class="chg ${cls}"><strong>${verb} ${esc(c.name)}</strong><span>${esc([noBlock?"":BLOCKN[c.block]||"", ...(c.details||[])].filter(Boolean).join(". "))}</span></div>`;
+}
+function versionsList(){
+  const v = S.settings.versions;
+  return v && v.length ? v : [{id:"v0", source:"start", date:S.settings.programStart||null, changes:[], label:"September 2026 sheet"}];
+}
+function versionLabel(v){
+  if(v.source==="start") return v.label || "September 2026 sheet";
+  return `${v.label || (v.source==="import" ? "Physio plan" : "Your edits")}, ${fmtShort(v.date)}`;
+}
+function commitProgram(np, source, changes, label){
+  if(!changes.length) return false;
+  if(!S.settings.versions || !S.settings.versions.length){
+    S.settings.versions = [{id:"v0", source:"start", date:S.settings.programStart||today(), at:Date.now(), changes:[], label:"September 2026 sheet", program:clone(S.settings.program)}];
+  }
+  const vs = S.settings.versions, last = vs[vs.length-1], t = today();
+  if(source==="manual" && last.source==="manual" && last.date===t){ last.changes.push(...changes); last.program = clone(np); last.at = Date.now(); if(label) last.label = label; }
+  else vs.push({id:"v"+Date.now().toString(36), source, date:t, at:Date.now(), changes, label:label||"", program:clone(np)});
+  while(vs.length > 20) vs.shift();
+  S.settings.program = np;
+  S.settings.updatedAt = Date.now(); persist();
+  return true;
+}
+function programText(P){
+  const ex = p => `- ${p.name}: ${p.sets} × ${p.target}${p.rpe?`, RPE ${p.rpe}`:""}${p.notes?` (${p.notes})`:""}${p.paused?" [paused]":""}`;
+  return [`Rehab program as of ${fmtLong(today())}`, "", "Warm-up", ...P.warmup.map(ex), "", "Gym", ...P.gym.map(ex), "", "Conditioning",
+    ...P.conditioning.map(c=>`- ${c.id} ${c.erg}: ${c.sets} rounds, ${mmss(c.work)} work / ${mmss(c.rest)} easy, RPE ${c.rpe}`)].join("\n");
+}
+
+/* ---------- reading Claude's codes ---------- */
+const numOr = (v,lo,hi) => { const n = Number(v); return v==null || v==="" || !isFinite(n) ? null : Math.max(lo,Math.min(hi,Math.round(n*2)/2)); };
+let idSeq = 0;
+function sanExField(k,v){
+  switch(k){
+    case "name": return String(v||"").trim().slice(0,80) || undefined;
+    case "sets": return numOr(v,1,20) || undefined;
+    case "target": return String(v||"").trim().slice(0,60) || undefined;
+    case "kind": return ["reps","time","distance"].includes(v) ? v : undefined;
+    case "reps": return numOr(v,1,100);
+    case "secs": return numOr(v,1,600);
+    case "rpe": return numOr(v,1,10);
+    case "notes": return String(v??"").trim().slice(0,160);
+    case "sided": case "weight": return !!v;
+    case "kg": return numOr(v,0,500);
+    case "erg": return String(v||"").trim().slice(0,30) || undefined;
+    case "id": return String(v||"").trim().slice(0,12) || undefined;
+    case "work": return numOr(v,5,3600) || undefined;
+    case "rest": return numOr(v,0,3600) ?? undefined;
+  }
+  return undefined;
+}
+function applyOps(o){
+  if(!o || typeof o!=="object" || !Array.isArray(o.ops)) return null;
+  const np = clone(S.settings.program), unclear = Array.isArray(o.unclear) ? o.unclear.filter(Boolean).map(String).slice(0,10) : [];
+  const blocks = ["warmup","gym","conditioning"];
+  const keyOf = (b,x) => b==="conditioning" ? x.id : x.name;
+  const find = (b,name) => { const order = blocks.includes(b) ? [b, ...blocks.filter(x=>x!==b)] : blocks;
+    for(const bb of order){ const k = np[bb].findIndex(x=>norm(keyOf(bb,x))===norm(name)); if(k>=0) return [bb,k]; } return null; };
+  o.ops.slice(0,30).forEach(op=>{
+    if(!op || typeof op!=="object") return;
+    if(op.op==="update" || op.op==="remove"){
+      const hit = find(op.block, op.name);
+      if(!hit){ unclear.push(`Couldn't find "${op.name}" in your program`); return; }
+      const [b,k] = hit;
+      if(op.op==="remove"){ np[b].splice(k,1); return; }
+      const it = np[b][k], set = op.set && typeof op.set==="object" ? op.set : {};
+      Object.keys(set).forEach(f=>{ if(!(b==="conditioning" ? ["id","erg","work","rest","sets","rpe"] : ["name","sets","target","kind","reps","secs","rpe","notes","sided","weight","kg"]).includes(f)) return;
+        const v = sanExField(f,set[f]); if(v!==undefined) it[f] = v; });
+      if(it.kind==="time" && !it.secs) it.secs = 30; if(it.kind==="reps" && !it.reps) it.reps = 10;
+    } else if(op.op==="add"){
+      const b = blocks.includes(op.block) ? op.block : "gym";
+      const one = sanitizeImport(b==="conditioning" ? {conditioning:[op.exercise]} : {[b]:[op.exercise]});
+      const item = one && one[b] && one[b][0]; if(!item){ unclear.push("An added exercise couldn't be read"); return; }
+      const after = op.after ? np[b].findIndex(x=>norm(keyOf(b,x))===norm(op.after)) : -1;
+      if(after>=0) np[b].splice(after+1,0,item); else np[b].push(item);
+    }
+  });
+  return {np, unclear, title:String(o.title||"").slice(0,60)};
+}
+function sanitizeImport(o){
+  if(!o || typeof o!=="object" || Array.isArray(o)) return null;
+  const ex = a => !Array.isArray(a) ? null : a.filter(x=>x && x.name).slice(0,30).map(x=>{
+    const kind = ["reps","time","distance"].includes(x.kind) ? x.kind : "reps";
+    const e = {id:"x"+Date.now().toString(36)+(idSeq++), name:String(x.name).trim().slice(0,80), sets:numOr(x.sets,1,20)||2,
+      target:String(x.target||"").trim().slice(0,60), kind, rpe:numOr(x.rpe,1,10), notes:String(x.notes||"").trim().slice(0,160),
+      sided:!!x.sided, weight:!!x.weight, kg:numOr(x.kg,0,500)};
+    if(kind==="reps") e.reps = numOr(x.reps,1,100) || 10;
+    if(kind==="time") e.secs = numOr(x.secs,1,600) || 30;
+    if(!e.target) e.target = kind==="reps" ? `${e.reps} reps` : kind==="time" ? `${e.secs} s` : "as set";
+    return e;
+  });
+  const cond = a => !Array.isArray(a) ? null : a.filter(x=>x && (x.id || x.erg)).slice(0,15).map((x,k)=>({
+    id:String(x.id||String.fromCharCode(65+k)).trim().slice(0,12), erg:String(x.erg||"Erg").trim().slice(0,30),
+    work:numOr(x.work,5,3600)||30, rest:numOr(x.rest,0,3600)??30, sets:numOr(x.sets,1,50)||4, rpe:numOr(x.rpe,1,10)||5}));
+  return {title:String(o.title||"").slice(0,60), warmup:ex(o.warmup), gym:ex(o.gym), conditioning:cond(o.conditioning),
+    unclear:Array.isArray(o.unclear) ? o.unclear.filter(Boolean).map(String).slice(0,10) : []};
+}
+function matchExisting(list, old){
+  const all = [...old.warmup, ...old.gym];
+  return list.map(x=>{ const m = all.find(o=>norm(o.name)===norm(x.name)); if(m){ x.id = m.id; if(m.weight) x.weight = true; if(looseText(m.target)===looseText(x.target)) x.target = m.target; } return x; });
+}
+function sanitizeCue(o){
+  if(!o || typeof o!=="object") return null;
+  const arr = a => Array.isArray(a) ? a.filter(x=>typeof x==="string" && x.trim()).map(x=>x.trim().slice(0,200)).slice(0,6) : [];
+  const c = {what:String(o.what||"").slice(0,300), setup:arr(o.setup), move:arr(o.move), cues:arr(o.cues), mistakes:arr(o.mistakes), search:String(o.search||"").slice(0,100)};
+  return c.move.length || c.cues.length ? c : null;
+}
+const ytUrl = q => "https://www.youtube.com/results?search_query="+encodeURIComponent(q);
+
+/* ---------- paste from Claude ---------- */
+function findJson(text){
+  const t = String(text||"");
+  const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/);
+  const body = fence ? fence[1] : t;
+  const a = body.indexOf("{"), b = body.lastIndexOf("}");
+  if(a<0 || b<=a) return null;
+  try{ return JSON.parse(body.slice(a,b+1)); }catch(e){ return null; }
+}
+function parseCode(text){
+  const o = findJson(text);
+  if(!o || typeof o!=="object") return {error:"That doesn't look like a code from Claude. Copy Claude's whole reply, or just the part between the code markers, and paste it again."};
+  const old = S.settings.program;
+  let np = clone(old), unclear = [], kept = [], label = String(o.title||"").slice(0,60), scope = "changes";
+  if(Array.isArray(o.ops)){
+    const r = applyOps(o); if(!r) return {error:"The changes in that code couldn't be read."};
+    np = r.np; unclear = r.unclear;
+  } else if(o.warmup || o.gym || o.conditioning){
+    const r = sanitizeImport(o); if(!r) return {error:"The program in that code couldn't be read."};
+    np = {warmup:r.warmup?matchExisting(r.warmup,old):clone(old.warmup), gym:r.gym?matchExisting(r.gym,old):clone(old.gym), conditioning:r.conditioning||clone(old.conditioning)};
+    unclear = r.unclear; kept = ["warmup","gym","conditioning"].filter(b=>!r[b]); scope = "full";
+  } else if(Array.isArray(o.unclear)) unclear = o.unclear.filter(Boolean).map(String).slice(0,10);
+  const cues = [];
+  if(o.cues && typeof o.cues==="object") Object.entries(o.cues).slice(0,20).forEach(([name,c])=>{ const card = sanitizeCue(c); if(card) cues.push({name:String(name).slice(0,80), card}); });
+  const changes = progDiff(old,np);
+  if(!changes.length && !cues.length) return {error: unclear.length ? "Nothing to change. Claude noted: "+unclear.join(" ") : "That code doesn't contain any changes."};
+  return {result:{np, changes, unclear, kept, cues}, label: label || (changes.length ? (scope==="full"?"Physio plan":"Physio changes") : "Cue cards"), scope};
+}
+function viewImport(){
+  const I = S.imp;
+  let html = backBtn("Program") + `<header class="top"><div><h1>Paste from Claude</h1><p class="sub">Send your physio's note, a new program sheet or an exercise name to Claude in your Rehab tracker project. Claude replies with a code. Paste it here to check it.</p></div></header>`;
+  if(I.result) return html + viewImportReview();
+  html += `<div class="card"><label class="field"><span>Claude's code</span><textarea class="note" style="min-height:180px" data-bind="i:text" placeholder="Paste Claude's whole reply, or just the code">${esc(I.text)}</textarea></label>
+    <button class="btn primary" data-a="imp-parse">Check the code</button></div>`;
+  if(I.error) html += `<div class="alert warn"><strong>That didn't work</strong>${esc(I.error)}</div>`;
+  html += `<div class="card"><h3>Rather enter it yourself?</h3><p class="small" style="margin-top:6px">Add or edit exercises directly on the Program tab.</p><button class="btn" data-a="pe-add-top">Add an exercise</button></div>`;
+  return html;
+}
+function copyRequest(text){
+  const done = () => toast("Copied. Paste it into Claude");
+  try{ navigator.clipboard.writeText(text).then(done, ()=>filesText("Copy this to Claude", text)); }catch(e){ filesText("Copy this to Claude", text); }
+}
+function cueRequest(g){ return `Cue card please for my Rehab log: ${g.name}, ${g.sets} × ${g.target}${g.rpe?`, RPE ${g.rpe}`:""}${g.sided?", each side":""}${g.notes?`. Physio notes: ${g.notes}`:""}.`; }
+function setCueRating(v){
+  const c = S.settings.cues && S.guide && S.settings.cues[norm(S.guide.name)];
+  if(!c) return; c.rating = v; S.settings.updatedAt = Date.now(); persist();
+}
+
+/* ---------- local files and backups ---------- */
+function downloadFile(name, text, type){
+  try{
+    const url = URL.createObjectURL(new Blob([text],{type:type||"application/octet-stream"}));
+    const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 4000); return true;
+  }catch(e){ return false; }
+}
+function backupJson(){ return JSON.stringify({app:"rehab-log", version:1, exportedAt:new Date().toISOString(), settings:stripMeta(S.settings), records:Object.values(S.records).map(stripMeta)}, null, 2); }
+function exportData(){
+  if(downloadFile("rehab-log-backup-"+today()+".json", backupJson(), "application/json")){ store("rl.lastBackup", Date.now()); toast("Backup saved to your Downloads"); render(); }
+  else filesText("Your backup", backupJson());
+}
+function lastBackupDays(){ const t = load("rl.lastBackup", 0); return t ? Math.floor((Date.now()-t)/864e5) : null; }
+function backupBanner(){
+  if(!Object.keys(S.records).length) return "";
+  const d = lastBackupDays(); if(d!==null && d<7) return "";
+  return `<div class="alert warn"><strong>Back up your log</strong>${d===null?"You haven't saved a backup yet.":`Your last backup was ${d} days ago.`} Your log lives only on this phone, so keep a copy in case it's lost or reset.
+    <button class="btn" style="margin-top:10px;min-height:44px" data-a="export">Save backup now</button></div>`;
+}
+async function restoreText(text){
+  try{
+    const data = JSON.parse(text); let n = 0;
+    if(!data || (!data.records && !data.settings)) throw 0;
+    (data.records||[]).forEach(r=>{ if(!r || !r.id || !r.type) return; const l = S.records[r.id]; if(!l || (r.updatedAt||0)>(l.updatedAt||0)){ S.records[r.id] = r; delete r._synced; n++; } });
+    if(data.settings && (data.settings.updatedAt||0)>=(S.settings.updatedAt||0)){ S.settings = data.settings; delete S.settings._synced; }
+    persist(); render(); toast(`Restored ${n} entries`);
+  }catch(err){ toast("That isn't a Rehab log backup"); }
+}
+async function restoreBackup(f){ restoreText(await f.text()); }
+
+/* ---------- data for Claude ---------- */
+function claudeData(){
+  const cis = recs(["checkin"]).slice(-21), ss = recs(["strength","conditioning"]).slice(-10);
+  const ciLine = c => `${c.date} | heaviness L ${c.peakL??"–"} R ${c.peak??"–"} | strength L ${c.strengthL??"–"} R ${c.strength??"–"} | back ${c.back??"–"} | sit ${labelOf(SIT,c.sit)} | stand ${labelOf(STAND,c.stand)}${c.notes?` | ${c.notes}`:""}`;
+  const sLine = r => { const offs = (r.ex||[]).filter(e=>e.lOff||e.rOff).map(e=>`${e.name} (${[e.lOff?"L":"",e.rOff?"R":""].filter(Boolean).join("+")} off)`);
+    return `${r.date} | ${r.type==="strength"?"strength":"conditioning "+(r.cond?r.cond.pid:"")} | ${hvText(r)}${offs.length?` | ${offs.join(", ")}`:""}${r.notes?` | ${r.notes}`:""}`; };
+  return [`Rehab log data for Claude, ${fmtLong(today())}`, "", reportText(56,"Anyone"), "", programText(S.settings.program), "",
+    "Recent check-ins:", ...cis.map(ciLine), "", "Recent sessions:", ...ss.map(sLine)].join("\n");
+}
+
+/* ---------- small pickers ---------- */
+function pick(bind, list, cur, multi){
+  return `<div class="chips">${list.map(v=>{ const on = multi ? (cur||[]).includes(v) : cur===v;
+    return `<button class="chip${on?" on":""}" data-a="pick" data-bind="${bind}" data-val="${esc(v)}"${multi?' data-multi="1"':""} aria-pressed="${on}">${esc(v)}</button>`; }).join("")}</div>`;
+}
+const backBtn = (label) => `<button class="backlink" data-a="back">‹ ${esc(label)}</button>`;
+
+/* ---------- program (control centre) ---------- */
+function exEditor(){
+  const E = S.edit, d = E.draft, isNew = E.k < 0;
+  if(E.blk==="conditioning"){
+    return `<div class="editor"><h3>${isNew?"New conditioning session":"Edit session"}</h3>
+      <div class="pair" style="margin-top:10px"><label class="field"><span>Session</span><input type="text" value="${esc(d.id)}" data-bind="e:id"></label><label class="field"><span>Machine</span><input type="text" value="${esc(d.erg)}" data-bind="e:erg"></label></div>
+      <div class="pair"><label class="field"><span>Work (seconds)</span><input type="number" inputmode="numeric" value="${d.work??""}" data-bind="e:work" data-num="1"></label><label class="field"><span>Easy (seconds)</span><input type="number" inputmode="numeric" value="${d.rest??""}" data-bind="e:rest" data-num="1"></label></div>
+      <div class="pair"><label class="field"><span>Rounds</span><input type="number" inputmode="numeric" value="${d.sets??""}" data-bind="e:sets" data-num="1"></label><label class="field"><span>Target RPE</span><input type="number" inputmode="numeric" value="${d.rpe??""}" data-bind="e:rpe" data-num="1"></label></div>
+      <div class="row"><button class="btn primary" data-a="pe-save">Save changes</button><button class="btn ghost" data-a="pe-cancel">Cancel</button></div>
+      ${isNew?"":`<button class="btn danger" style="min-height:44px" data-a="pe-del">Remove session</button>`}</div>`;
+  }
+  return `<div class="editor"><h3>${isNew?"New exercise":"Edit exercise"}</h3>
+    ${isNew?`<div class="q" style="margin:10px 0 4px"><p>Part of the program</p><div class="chips"><button class="chip${E.blk==="warmup"?" on":""}" data-a="pe-blk" data-v="warmup">Warm-up</button><button class="chip${E.blk==="gym"?" on":""}" data-a="pe-blk" data-v="gym">Gym</button></div></div>`:""}
+    <label class="field" style="margin-top:10px"><span>Name</span><input type="text" value="${esc(d.name)}" data-bind="e:name"></label>
+    <div class="pair"><label class="field"><span>Sets</span><input type="number" inputmode="numeric" value="${d.sets??""}" data-bind="e:sets" data-num="1"></label>
+    <label class="field"><span>Type</span><select data-bind="e:kind" data-rerender="1"><option value="reps"${d.kind==="reps"?" selected":""}>Reps</option><option value="time"${d.kind==="time"?" selected":""}>Timed hold</option><option value="distance"${d.kind==="distance"?" selected":""}>Distance</option></select></label></div>
+    <div class="pair"><label class="field"><span>Target, as written</span><input type="text" value="${esc(d.target)}" data-bind="e:target"></label>
+    ${d.kind==="reps"?`<label class="field"><span>Starting reps</span><input type="number" inputmode="numeric" value="${d.reps??""}" data-bind="e:reps" data-num="1"></label>`:d.kind==="time"?`<label class="field"><span>Hold (seconds)</span><input type="number" inputmode="numeric" value="${d.secs??""}" data-bind="e:secs" data-num="1"></label>`:`<span></span>`}</div>
+    <div class="pair"><label class="field"><span>Target RPE</span><input type="number" inputmode="numeric" value="${d.rpe??""}" data-bind="e:rpe" data-num="1"></label>
+    <label class="field"><span>Weight (kg)</span><input type="number" inputmode="decimal" step="0.5" value="${d.kg??""}" data-bind="e:kg" data-num="1"></label></div>
+    <label class="field"><span>Physio's notes</span><input type="text" value="${esc(d.notes||"")}" data-bind="e:notes"></label>
+    <div class="checks"><label><input type="checkbox" data-bind="e:weight"${d.weight?" checked":""}>Log weight</label><label><input type="checkbox" data-bind="e:sided"${d.sided?" checked":""}>Each side separately</label></div>
+    <div class="row"><button class="btn primary" data-a="pe-save">Save changes</button><button class="btn ghost" data-a="pe-cancel">Cancel</button></div>
+    ${isNew?"":`<button class="btn danger" style="min-height:44px" data-a="pe-del">Remove exercise</button>`}</div>`;
+}
+function blockCard(blk){
+  const list = S.settings.program[blk], E = S.edit, isC = blk==="conditioning";
+  const rows = list.map((p,k)=>{
+    if(E && E.blk===blk && E.k===k) return exEditor();
+    const title = isC ? condName(p) : p.name;
+    const sub = isC ? `${p.sets} rounds of ${mmss(p.work)} work, ${mmss(p.rest)} easy. RPE ${p.rpe}` : `${p.sets} × ${esc(p.target)}${p.rpe?`, RPE ${p.rpe}`:""}${p.notes?`. ${esc(p.notes)}`:""}`;
+    const at = `data-blk="${blk}" data-k="${k}"`;
+    return `<div class="pe${p.paused?" paused":""}"><h3>${esc(title)}${p.paused?`<span class="badge">Paused</span>`:""}</h3><p class="target">${sub}</p>
+      <div class="pe-tools"><button class="mini" data-a="pe-move" data-d="-1" ${at}${k===0?" disabled":""} aria-label="Move ${esc(title)} up">↑</button><button class="mini" data-a="pe-move" data-d="1" ${at}${k===list.length-1?" disabled":""} aria-label="Move ${esc(title)} down">↓</button>
+      <button class="mini" data-a="pe-edit" ${at}>Edit</button>${isC?"":`<button class="mini" data-a="pe-pause" ${at}>${p.paused?"Resume":"Pause"}</button><button class="mini" data-a="guide" data-src="p" ${at}>Form guide</button>`}</div></div>`;
+  }).join("");
+  const adding = E && E.blk===blk && E.k<0;
+  return `<details class="card" data-ob="${blk}"${adding || (E && E.blk===blk) || S.ob[blk] ? " open":""}><summary>${BLOCKN[blk]} <span class="small" style="margin-left:auto;margin-right:12px">${list.length}</span></summary>${rows}
+    ${adding ? exEditor() : `<button class="btn" style="margin-top:12px" data-a="pe-add" data-blk="${blk}">Add ${isC?"conditioning session":(blk==="warmup"?"warm-up exercise":"gym exercise")}</button>`}</details>`;
+}
+function inboxBanner(){ return ""; }
+function viewProgram(){
+  const vs = versionsList(), cur = vs[vs.length-1];
+  let html = `<header class="top"><div><h1>Program</h1><p class="sub">Current: ${esc(versionLabel(cur))}</p>${cloudLine()}</div></header>` + inboxBanner() + `
+    <button class="action main" data-a="imp-open"><strong>Paste from Claude</strong><span>Send your physio's note or new sheet to Claude in your Rehab tracker project, then paste the code here. You check every change before it applies.</span></button>
+    <button class="action" data-a="pe-add-top"><strong>Add an exercise yourself</strong><span>Type in a new exercise from your physio. Edit or remove any exercise below.</span></button>`;
+  if(cur.changes && cur.changes.length){
+    html += `<div class="card"><h3>What changed last</h3><p class="small">${esc(versionLabel(cur))}</p>${cur.changes.slice(0,12).map(chgRow).join("")}${cur.changes.length>12?`<p class="small">And ${cur.changes.length-12} more.</p>`:""}</div>`;
+  }
+  html += blockCard("warmup") + blockCard("gym") + blockCard("conditioning");
+  html += `<p class="small">Changes apply from your next session. Paused exercises stay here but are left out of sessions.</p>`;
+  if(vs.length > 1){
+    html += `<details class="card"><summary>Program history</summary>${[...vs].reverse().map((v,n)=>`<div class="prog-item"><strong>${esc(versionLabel(v))}</strong>${n===0?` <span class="badge">Current</span>`:""}
+      ${v.changes && v.changes.length ? `<p class="small">${v.changes.length} change${v.changes.length>1?"s":""}: ${esc(v.changes.slice(0,4).map(c=>({add:"added ",remove:"removed ",move:"moved "}[c.kind]||"changed ")+c.name).join(", "))}${v.changes.length>4?"…":""}</p>`:""}
+      ${n>0 && v.program ? `<button class="mini" data-a="ver-restore" data-id="${esc(v.id)}">Go back to this version</button>`:""}</div>`).join("")}</details>`;
+  }
+  html += `<details class="card"><summary>Rest timer, backup and sharing</summary>
+      <h3 style="margin-top:12px">Rest between sets</h3><p class="small">Starts when you tick a set.</p>${chips("s:restSec",[{v:60,l:"1:00"},{v:90,l:"1:30"},{v:120,l:"2:00"},{v:180,l:"3:00"}],S.settings.restSec)}
+      <h3 style="margin-top:8px">Backup</h3><p class="small">Your log lives only on this phone. Save a backup file regularly. The app reminds you weekly.</p>
+      <div class="row" style="margin-top:10px"><button class="btn" data-a="export">Save backup file</button><label class="btn">Restore from file<input class="fileov" type="file" accept=".json,application/json" data-imp="backup" aria-label="Restore from file"></label></div>
+      <button class="btn" data-a="restore-paste">Restore from pasted text</button>
+      <h3 style="margin-top:14px">Share with Claude</h3><p class="small">Copies your recent log as text to paste into Claude, so it can look at your trends.</p>
+      <button class="btn" data-a="claude-data">Copy my data for Claude</button>
+      <button class="btn" data-a="copy-program">Copy program as text</button>
+      <button class="btn ghost" data-a="prog-reset">Reset program to September 2026 sheet</button></details>`;
+  return html;
+}
+
+/* ---------- import ---------- */
+function viewImportReview(){
+  const I = S.imp, r = I.result;
+  let html = `<h2>Check the changes</h2><p>Nothing changes until you apply it. Compare this against your physio's sheet.</p>`;
+  if(r.unclear.length) html += `<div class="alert warn"><strong>Claude wasn't sure about</strong>${r.unclear.map(u=>esc(u)).join("<br>")}<br><span class="small">You can fix these on the Program tab after applying.</span></div>`;
+  if(r.kept.length) html += `<p class="small">The plan didn't cover ${r.kept.map(b=>BLOCKN[b].toLowerCase()).join(" or ")}, so your current ${r.kept.length>1?"ones stay":"one stays"}.</p>`;
+  if(!r.changes.length && !r.cues.length) html += `<div class="card"><p>This matches your current program. There's nothing to change.</p></div>`;
+  else ["warmup","gym","conditioning"].forEach(b=>{ const cs = r.changes.filter(c=>c.block===b); if(cs.length) html += `<div class="card"><h3>${BLOCKN[b]}</h3>${cs.map(c=>chgRow(c,true)).join("")}</div>`; });
+  if(r.cues.length) html += `<div class="card"><h3>Cue cards</h3>${r.cues.map(c=>`<div class="chg add"><strong>${S.settings.cues&&S.settings.cues[norm(c.name)]?"Update":"New"} cue card: ${esc(c.name)}</strong><span>${esc(c.card.what||"")}</span></div>`).join("")}</div>`;
+  const P = r.np;
+  if(r.changes.length) html += `<details class="card"><summary>See the full new program</summary>${["warmup","gym"].map(b=>`<h3 style="margin-top:12px">${BLOCKN[b]}</h3>${P[b].map(p=>`<p>${esc(p.name)}: ${p.sets} × ${esc(p.target)}${p.rpe?`, RPE ${p.rpe}`:""}${p.notes?`. ${esc(p.notes)}`:""}</p>`).join("")||`<p class="small">None</p>`}`).join("")}
+    <h3 style="margin-top:12px">Conditioning</h3>${P.conditioning.map(c=>`<p>${esc(condName(c))}: ${c.sets} × ${mmss(c.work)} / ${mmss(c.rest)}, RPE ${c.rpe}</p>`).join("")}</details>`;
+  if(r.changes.length || r.cues.length){
+    html += r.changes.length ? `<div class="card"><label class="field"><span>Name this version</span><input type="text" value="${esc(I.label)}" data-bind="i:label"></label>
+      <div class="checks"><label><input type="checkbox" data-bind="i:restart"${I.restart?" checked":""}>Start program week 1 from today</label></div></div>` : "";
+    html += `<button class="btn primary" data-a="imp-apply">${r.changes.length ? (I.scope==="changes"?"Apply these changes":"Apply new program") : "Save cue cards"}</button>`;
+  }
+  html += `<button class="btn ghost" data-a="imp-discard">${r.changes.length||r.cues.length?"Discard":"Back to program"}</button>`;
+  return html;
+}
+
+/* ---------- form guide ---------- */
+function viewGuide(){
+  const g = S.guide; if(!g) return backBtn("Back");
+  const c = S.settings.cues && S.settings.cues[norm(g.name)];
+  const q = (c && c.card.search) || (g.name+" exercise technique");
+  let html = backBtn(S.guideBack==="session" ? "Session" : "Program") + `<header class="top"><div><h1>${esc(g.name)}</h1><p class="sub">${g.sets} × ${esc(g.target)}${g.rpe?`, RPE ${g.rpe}`:""}${g.notes?`. ${esc(g.notes)}`:""}</p></div></header>`;
+  if(c){
+    const k = c.card, li = a => a.map(x=>`<li>${esc(x)}</li>`).join("");
+    html += `<div class="card cue">${k.what?`<p>${esc(k.what)}</p>`:""}
+      ${k.setup.length?`<h3>Set up</h3><ol>${li(k.setup)}</ol>`:""}
+      ${k.move.length?`<h3>The movement</h3><ol>${li(k.move)}</ol>`:""}
+      ${k.cues.length?`<h3>Think about</h3><ul>${li(k.cues)}</ul>`:""}
+      ${k.mistakes.length?`<h3>Common mistakes</h3><ul>${li(k.mistakes)}</ul>`:""}
+      <p class="disclaim">General guidance written by Claude. Your physio's instructions and notes come first.</p></div>`;
+    {
+      html += c.rating===1 ? `<p class="small">You marked this cue card as clear.</p>` : `<p style="font-weight:600;margin-top:16px">Does this make sense?</p>`;
+      html += `<div class="row">${c.rating===1?"":`<button class="btn primary" data-a="cue-ok">Yes, got it</button>`}<a class="btn" href="${ytUrl(q)}" target="_blank" rel="noopener noreferrer" data-a="cue-video">${c.rating===1?"Watch a video":"Not clear, find a video"}</a></div>`;
+      html += `<button class="btn ghost" data-a="cue-ask">Ask Claude for a new version</button>`;
+    }
+  } else {
+    html += `<div class="card"><p>No cue card yet for this exercise.</p><p class="small">Copy the request, send it to Claude in your Rehab tracker project, then paste Claude's code on the Program tab.</p>
+      <button class="btn primary" data-a="cue-ask">Copy a request for Claude</button><button class="btn" data-a="imp-open">Paste from Claude</button>`;
+    html += `<a class="btn" href="${ytUrl(q)}" target="_blank" rel="noopener noreferrer">Find a video on YouTube</a></div>`;
+  }
+  if(g.error) html += `<div class="alert warn"><strong>That didn't work</strong>${esc(g.error)}</div>`;
+  return html;
+}
+
+/* ---------- physio test results ---------- */
+function newRetest(baseline){
+  const row = (pos,L,R) => ({test:"Hamstring", pos, L, R});
+  return baseline
+    ? {id:"t-"+uid(), type:"retest", date:"2026-10-02", units:"", rows:[row("180°",28,16),row("75°",28,16),row("90°",28,28)], extDeficit:null, notes:"Right knee 10–15° short of straight. Units not recorded."}
+    : {id:"t-"+uid(), type:"retest", date:today(), units:"", rows:[row("180°",null,null),row("75°",null,null),row("90°",null,null)], extDeficit:null, notes:""};
+}
+function viewRetest(){
+  const r = S.rt, hasAny = recs(["retest"]).length;
+  let html = backBtn("Today") + `<header class="top"><div><h1>Physio results</h1><p class="sub">Measurements from your physio, recorded the same way each time.</p></div></header>`;
+  if(!hasAny && !S.records[r.id] && r.date!=="2026-10-02") html += `<button class="action" data-a="rt-baseline"><strong>Start with your 2 October results</strong><span>Hamstring force 28 and 16 at 180° and 75°, equal at 90°</span></button>`;
+  html += `<div class="card"><label class="field"><span>Date tested</span><input type="date" value="${esc(r.date)}" data-bind="t:date"></label>
+    <div class="rt-grid head"><span>Test</span><span>Position</span><span>Left</span><span class="r-label">Right</span><span></span></div>
+    ${r.rows.map((x,k)=>`<div class="rt-grid"><input type="text" value="${esc(x.test)}" data-bind="t:rows.${k}.test" aria-label="Test name"><input type="text" value="${esc(x.pos)}" data-bind="t:rows.${k}.pos" aria-label="Position or angle">
+      <input type="number" inputmode="decimal" value="${x.L??""}" data-bind="t:rows.${k}.L" data-num="1" aria-label="Left"><input class="r-in" type="number" inputmode="decimal" value="${x.R??""}" data-bind="t:rows.${k}.R" data-num="1" aria-label="Right">
+      <button class="mini" data-a="rt-delrow" data-k="${k}" aria-label="Remove row">×</button></div>`).join("")}
+    <button class="btn" style="min-height:44px" data-a="rt-addrow">Add a measurement</button>
+    <div class="pair" style="margin-top:14px"><label class="field"><span>Units (if known)</span><input type="text" value="${esc(r.units)}" data-bind="t:units" placeholder="kg, N or lb"></label>
+    <label class="field"><span class="r-label">Right knee short of straight (°)</span><input type="number" inputmode="numeric" value="${r.extDeficit??""}" data-bind="t:extDeficit" data-num="1"></label></div>
+    <label class="field"><span>Notes</span><textarea class="note" data-bind="t:notes" placeholder="What the physio said, or anything that was different">${esc(r.notes)}</textarea></label></div>
+    <button class="btn primary" data-a="rt-save">${S.records[r.id]?"Update results":"Save results"}</button>`;
+  return html;
+}
+function retestText(r){
+  return [`Physio test results, ${fmtLong(r.date)}${r.units?` (units: ${r.units})`:""}`,
+    ...r.rows.filter(x=>x.L!=null||x.R!=null).map(x=>`- ${x.test} ${x.pos}: left ${x.L??"–"}, right ${x.R??"–"}${x.L&&x.R!=null?` (right ${Math.round(x.R/x.L*100)}% of left)`:""}`),
+    r.extDeficit!=null ? `- Right knee short of straight: ${r.extDeficit}°` : "", r.notes ? `Notes: ${r.notes}` : ""].filter(Boolean).join("\n");
+}
+
+/* ---------- questions ---------- */
+const WHO = ["Physio","GP","Neurologist","Anyone"];
+function viewQuestions(){
+  const all = recs(["question"]), open = all.filter(q=>!q.answered), done = all.filter(q=>q.answered).reverse();
+  const forWho = w => w==="Anyone" ? "For anyone" : `For your ${w==="GP"?"GP":w.toLowerCase()}`;
+  let html = backBtn("Today") + `<header class="top"><div><h1>Questions</h1><p class="sub">Jot them down when they come up, then take them to your appointments.</p></div></header>
+    <div class="card"><div class="q"><p>Who is it for?</p>${pick("q:who",WHO,S.q.who)}</div>
+    <label class="field"><span>Question</span><textarea class="note" data-bind="q:text" placeholder="For example: why is the right hamstring weaker at some angles than others?">${esc(S.q.text)}</textarea></label>
+    <button class="btn primary" data-a="q-add">Add question</button></div>`;
+  if(open.length) html += `<div class="card"><h3>Open</h3>${open.map(q=>`<div class="q-item"><p>${esc(q.text)}</p><p class="small">${esc(forWho(q.who))}, added ${esc(fmtShort(q.date))}</p>
+      <div class="pe-tools"><button class="mini" data-a="q-answer" data-id="${esc(q.id)}">Mark answered</button><button class="mini" data-a="rec-del" data-id="${esc(q.id)}">Delete</button></div></div>`).join("")}</div>`;
+  else html += `<p class="empty">No open questions.</p>`;
+  if(done.length) html += `<details class="card"><summary>Answered (${done.length})</summary>${done.map(q=>`<div class="q-item"><p>${esc(q.text)}</p>${q.answer?`<p>${esc(q.answer)}</p>`:""}<p class="small">${esc(forWho(q.who))}</p>
+      <div class="pe-tools"><button class="mini" data-a="q-reopen" data-id="${esc(q.id)}">Reopen</button><button class="mini" data-a="rec-del" data-id="${esc(q.id)}">Delete</button></div></div>`).join("")}</details>`;
+  return html;
+}
+
+/* ---------- symptom changes ---------- */
+const SYM_WHAT = ["Leg heavier","Leg weaker or gave way","Numbness or tingling","Back pain flare","Better than usual","Something else"];
+const SYM_DOING = ["Sitting","Standing still","Walking","At the gym","Lifting or bending","Driving","Lying down","Something else"];
+const SYM_LAST = ["A few minutes","Up to an hour","A few hours","Rest of the day","Still going"];
+function newSym(){ const d = new Date(); return {id:"y-"+uid(), type:"symptom", date:today(), time:pad(d.getHours())+":"+pad(d.getMinutes()), what:[], doing:[], lasted:null, note:""}; }
+function viewSymptom(){
+  const y = S.sym;
+  return backBtn("Today") + `<header class="top"><div><h1>Symptom change</h1><p class="sub">What changed, and what you were doing. Useful context for your physio and GP.</p></div></header>
+    <div class="card"><div class="pair"><label class="field"><span>Date</span><input type="date" value="${esc(y.date)}" data-bind="y:date"></label><label class="field"><span>Time</span><input type="time" value="${esc(y.time)}" data-bind="y:time"></label></div>
+    <div class="q"><p>What changed?</p>${pick("y:what",SYM_WHAT,y.what,true)}</div>
+    <div class="q"><p>What were you doing?</p>${pick("y:doing",SYM_DOING,y.doing,true)}</div>
+    <div class="q"><p>How long did it last?</p>${pick("y:lasted",SYM_LAST,y.lasted)}</div>
+    <label class="field"><span>Details</span><textarea class="note" data-bind="y:note" placeholder="Where you felt it, how it felt, what helped">${esc(y.note)}</textarea></label></div>
+    <div class="alert danger"><strong>Don't wait if it's serious</strong>Rapidly worsening weakness, new difficulty walking, saddle numbness, or new bladder or bowel changes need urgent medical assessment, not a log entry.</div>
+    <button class="btn primary" data-a="sym-save"${y.what.length?"":" disabled"}>Save</button>`;
+}
+
+function filesReminder(kind, text){
+  const body = kind==="program"
+    ? "Your app has the new program. Add your physio's new sheet to the Rehab tracker project in Claude as well, in place of the September sheet, so chats there work from the same plan."
+    : "Add these results to the Clinical summary in your Rehab tracker project in Claude, so chats there have your latest numbers.";
+  document.getElementById("modal-body").innerHTML = `<h3>Update your project files</h3><p>${body}</p><p class="small">Copy this to paste in if it helps.</p><textarea id="copytext" readonly style="min-height:160px">${esc(text)}</textarea><div class="row" style="margin-top:10px"><button class="btn primary" data-a="copy">Copy</button><button class="btn" data-a="modal-close">Done</button></div>`;
+  document.getElementById("modal").hidden = false;
+}
+
+/* ---------- timed tolerance tests ---------- */
+const TOL_CTX = {sit:["Office chair","Couch","Dining chair","Car","Other"], stand:["Standing still","Queue or bench","Other"]};
+function tolStart(pos){
+  S.tol = {id:"tt-"+uid(), pos, startedAt:Date.now(), ctx:null};
+  store("rl.tol.v1",S.tol); S.tolQ = 0; keepAwake(true); go("tol");
+}
+function tolEnd(how){
+  const t = S.tol; if(!t) return;
+  const mins = Math.round((Date.now()-t.startedAt)/600)/100;
+  const last = lastSymptoms();
+  S.tolDraft = {id:t.id, type:"tolerance", date:iso(new Date(t.startedAt)), pos:t.pos, startedAt:t.startedAt, endedAt:Date.now(),
+    minutes:Math.round(mins*10)/10, endedBy:how, ctx:t.ctx, heavyL:last.heavyL??0, heavyR:last.heavy??0, note:""};
+  S.tol = null; store("rl.tol.v1",null); keepAwake(false); render(false); window.scrollTo(0,0);
+}
+const tolLabel = r => r.endedBy==="onset" ? `${fmtMin(r.minutes)} before heaviness` : r.endedBy==="none" ? `${fmtMin(r.minutes)}, no heaviness` : `${fmtMin(r.minutes)}, stopped early`;
+function fmtMin(m){ m = Math.round(m); return m<60 ? `${m} min` : `${Math.floor(m/60)} h${m%60?` ${m%60} min`:""}`; }
+function viewTol(){
+  const t = S.tol, d = S.tolDraft;
+  if(d){
+    const ctxList = TOL_CTX[d.pos];
+    return `<header class="top"><div><h1>${d.pos==="sit"?"Sitting":"Standing"} test done</h1><p class="sub">${esc(tolLabel(d))}</p></div></header>
+      <div class="card">${legPair("Leg heaviness now","w:heavyL","w:heavyR",d.heavyL,d.heavyR,"None","Worst",false)}
+      <div class="q"><p>${d.pos==="sit"?"What were you sitting on?":"Where were you?"}</p>${pick("w:ctx",ctxList,d.ctx)}</div>
+      <label class="field"><span>Notes</span><textarea class="note" data-bind="w:note" placeholder="Where you felt it, what you were doing">${esc(d.note)}</textarea></label></div>
+      <button class="btn primary" data-a="tol-save">Save test</button><button class="btn ghost" data-a="tol-discard">Discard</button>`;
+  }
+  if(t){
+    const el = (Date.now()-t.startedAt)/1000;
+    return `<header class="top"><div><h1>${t.pos==="sit"?"Sitting":"Standing still"}</h1><p class="sub">Tap the button as soon as heaviness starts. Don't push through it.</p></div></header>
+      <div class="card"><div class="ringwrap"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="ring-bg" cx="100" cy="100" r="88"/><circle id="tol-ring" class="ring-fg" cx="100" cy="100" r="88" style="stroke-dashoffset:${(552.9*(1-((el/60)%15)/15)).toFixed(1)}"/></svg>
+        <div class="ring-center"><div class="ring-phase">Elapsed</div><div class="ring-time" id="tol-time" style="${el>=3600?"font-size:2.8rem":""}">${hmmss(el)}</div><div class="ring-sub">${esc(tolHint(t.pos))}</div></div></div>
+        <button class="btn primary" data-a="tol-onset">Heaviness started</button>
+        <div class="row" style="margin-top:10px"><button class="btn" data-a="tol-none">Stop, no heaviness</button><button class="btn ghost" data-a="tol-stop">Stopped for another reason</button></div>
+        <p class="small" style="margin-top:12px">The timer keeps going if you leave the app or lock your phone. A soft chime marks every 15 minutes.</p></div>`;
+  }
+  const tests = recs(["tolerance"]);
+  const recent = p => tests.filter(r=>r.pos===p).slice(-5);
+  const sumLine = p => { const s = tolStats(p); return s ? `Last ${s.n}: median ${fmtMin(s.median)}${s.lower?`, ${s.lower} without heaviness`:""}` : "No tests yet"; };
+  return backBtn("Today") + `<header class="top"><div><h1>Tolerance test</h1><p class="sub">Time how long you can sit or stand before heaviness starts. More accurate than guessing at the end of the day.</p></div></header>
+    <button class="action main" data-a="tol-start" data-v="sit"><strong>Start sitting test</strong><span>${esc(sumLine("sit"))}</span></button>
+    <button class="action" data-a="tol-start" data-v="stand"><strong>Start standing test</strong><span>${esc(sumLine("stand"))}</span></button>
+    <div class="card"><h3>Getting useful numbers</h3><p class="small" style="margin-top:6px">Start when you sit or stand, and stop the moment heaviness starts. Use the same kind of chair each time where you can. A few tests a week is plenty.</p></div>
+    ${tests.length?`<div class="card"><h3>Recent tests</h3>${[...tests].reverse().slice(0,8).map(r=>`<p>${esc(fmtShort(r.date))}: ${r.pos==="sit"?"sitting":"standing"}, ${esc(tolLabel(r))}${r.ctx?` (${esc(r.ctx.toLowerCase())})`:""}</p>`).join("")}</div>`:""}`;
+}
+function tolHint(pos){ return pos==="sit" ? "Sit as usual" : "Stand still"; }
+const hmmss = sec => sec>=3600 ? `${Math.floor(sec/3600)}:${pad(Math.floor(sec%3600/60))}:${pad(Math.floor(sec%60))}` : mmss(sec);
+function tolStats(pos, from){
+  const t = recs(["tolerance"]).filter(r=>r.pos===pos && (!from || r.date>=from) && r.endedBy!=="stopped").slice(from?0:-5);
+  if(!t.length) return null;
+  const v = t.map(r=>r.minutes).sort((a,b)=>a-b), m = v.length%2 ? v[(v.length-1)/2] : (v[v.length/2-1]+v[v.length/2])/2;
+  return {n:t.length, median:m, min:v[0], max:v[v.length-1], lower:t.filter(r=>r.endedBy==="none").length};
+}
+function tolTick(){
+  const t = S.tol; if(!t || S.view!=="tol" || S.tolDraft) return;
+  const el = (Date.now()-t.startedAt)/1000, e = document.getElementById("tol-time"); if(e){ e.textContent = hmmss(el); if(el>=3600) e.style.fontSize = "2.8rem"; }
+  const ring = document.getElementById("tol-ring"); if(ring) ring.style.strokeDashoffset = (552.9*(1-((el/60)%15)/15)).toFixed(1);
+  const q = Math.floor(el/900); if(q>0 && q!==S.tolQ){ S.tolQ = q; beep(660,.25); buzz(120); }
+}
+
+/* ---------- clinic report ---------- */
+const REP_RANGE = [{v:14,l:"2 weeks"},{v:28,l:"4 weeks"},{v:56,l:"8 weeks"}];
+function avg(a){ const v = a.filter(x=>typeof x==="number"); return v.length ? v.reduce((x,y)=>x+y,0)/v.length : null; }
+const f1 = v => v==null ? "–" : (Math.round(v*10)/10).toString();
+function reportData(days){
+  const end = today(), dl = dayList(days), from = dl[0];
+  const inR = r => r.date>=from && r.date<=end;
+  const cis = recs(["checkin"]).filter(inR), ss = recs(["strength","conditioning"]).filter(inR);
+  const half = dl[Math.floor(dl.length/2)];
+  const early = cis.filter(c=>c.date<half), late = cis.filter(c=>c.date>=half);
+  const fz = (k,inv) => cis.filter(c=>typeof c[k]==="number" && (inv ? c[k]<=3 : c[k]>=7)).length;
+  return {from, end, dl, cis, ss, early, late, fz,
+    st:ss.filter(r=>r.type==="strength"), cond:ss.filter(r=>r.type==="conditioning"),
+    tests:recs(["retest"]), symptoms:recs(["symptom"]).filter(inR), tols:recs(["tolerance"]).filter(inR),
+    flags:cis.filter(c=>c.flags && Object.values(c.flags).some(Boolean)),
+    versions:versionsList().filter(v=>v.date && v.date>=from && v.source!=="start"),
+    questions:recs(["question"]).filter(q=>!q.answered)};
+}
+function reportBody(days, who){
+  const D = reportData(days), P = S.settings;
+  const row = (label, l, r, note) => `<tr><td>${label}</td><td class="n">${l}</td><td class="n">${r}</td>${note!==undefined?`<td>${note}</td>`:""}</tr>`;
+  const trend = (k) => { const a = avg(D.early.map(c=>c[k])), b = avg(D.late.map(c=>c[k])); return a==null||b==null ? f1(avg(D.cis.map(c=>c[k]))) : `${f1(a)} → ${f1(b)}`; };
+  let h = `<div class="rep-head"><h1>Rehab log summary</h1><p>${P.name?esc(P.name)+". ":""}${esc(fmtShort(D.from))} to ${esc(fmtShort(D.end))} ${parseD(D.end).getFullYear()}. Prepared ${esc(fmtLong(today()))}${who&&who!=="Anyone"?` for ${who==="GP"?"GP":who.toLowerCase()} review`:""}.</p>
+    <p class="rep-src">Self-recorded in a personal log: ${D.cis.length} evening check-ins, ${D.st.length} strength and ${D.cond.length} conditioning sessions, ${D.tols.length} timed tolerance test${D.tols.length===1?"":"s"}.</p></div>`;
+  h += `<section><h2>Warning signs</h2><p class="${D.flags.length?"rep-bad":""}">${D.flags.length?`Ticked on ${D.flags.map(c=>esc(fmtShort(c.date))+": "+Object.entries(c.flags).filter(x=>x[1]).map(x=>esc(FLAGS[x[0]].toLowerCase())).join(", ")).join("; ")}.`:"None ticked in this period."}</p></section>`;
+  if(D.cis.length){
+    h += `<section><h2>Legs, from evening check-ins</h2><p class="rep-note">Scores out of 10. Where there's enough data, shown as the first half of the period to the second half.</p>
+      <table class="ext"><tr><th></th><th class="n">Left</th><th class="n">Right</th></tr>
+      ${row("Worst heaviness (lower is better)", trend("peakL"), trend("peak"))}
+      ${row("Strength feel (higher is better)", trend("strengthL"), trend("strength"))}
+      ${row("Days heaviness 7 or more", D.fz("peakL"), D.fz("peak"))}
+      ${row("Days strength 3 or less", D.fz("strengthL",true), D.fz("strength",true))}</table>
+      ${lineChart(D.dl,[{name:"Left heaviness",map:Object.fromEntries(D.cis.filter(c=>c.peakL!=null).map(c=>[c.date,c.peakL])),color:"var(--accent)"},{name:"Right heaviness",map:Object.fromEntries(D.cis.map(c=>[c.date,c.peak])),color:"var(--right)"}],10,"Leg heaviness",[7,10])}
+      ${lineChart(D.dl,[{name:"Left strength",map:Object.fromEntries(D.cis.filter(c=>c.strengthL!=null).map(c=>[c.date,c.strengthL])),color:"var(--accent)"},{name:"Right strength",map:Object.fromEntries(D.cis.map(c=>[c.date,c.strength])),color:"var(--right)"}],10,"Leg strength feel",[0,3])}</section>`;
+  }
+  const sitT = tolStats("sit",D.from), stT = tolStats("stand",D.from);
+  const modeOf = (k,list) => { const c = {}; D.cis.forEach(x=>{ if(x[k]!=null) c[x[k]] = (c[x[k]]||0)+1; }); const top = Object.entries(c).sort((a,b)=>b[1]-a[1])[0]; return top ? labelOf(list,Number(top[0])) : "–"; };
+  const tolCell = t => !t ? "None" : t.n===1 ? `${fmtMin(t.median)} (1 test${t.lower?", ended without heaviness":""})` : `Median ${fmtMin(t.median)}, range ${fmtMin(t.min)} to ${fmtMin(t.max)} (${t.n} tests${t.lower?`, ${t.lower} ended without heaviness`:""})`;
+  h += `<section><h2>Sitting and standing tolerance</h2><table class="ext"><tr><th></th><th>Timed tests</th><th>Usual end-of-day estimate</th></tr>
+    <tr><td>Sitting before heaviness</td><td>${tolCell(sitT)}</td><td>${esc(modeOf("sit",SIT))}</td></tr>
+    <tr><td>Standing still before heaviness</td><td>${tolCell(stT)}</td><td>${esc(modeOf("stand",STAND))}</td></tr>
+    <tr><td>Walking per day</td><td></td><td>${esc(modeOf("walk",WALK))}</td></tr></table></section>`;
+  if(D.tests.length){
+    const last = D.tests[D.tests.length-1], prev = D.tests.length>1 ? D.tests[D.tests.length-2] : null;
+    const pct = x => x && x.L ? Math.round(x.R/x.L*100)+"%" : "–";
+    h += `<section><h2>Physio measurements</h2><p class="rep-note">Latest ${esc(fmtShort(last.date))}${prev?`, compared with ${esc(fmtShort(prev.date))}`:""}${last.units?`. Units: ${esc(last.units)}`:". Units not recorded"}.</p>
+      <table class="ext"><tr><th>Test</th><th class="n">Left</th><th class="n">Right</th><th class="n">R as % of L</th>${prev?`<th class="n">Before</th>`:""}</tr>
+      ${last.rows.map(x=>{ const p = prev && prev.rows.find(y=>`${y.test} ${y.pos}`===`${x.test} ${x.pos}`); return `<tr><td>${esc(x.test)} ${esc(x.pos)}</td><td class="n">${x.L??"–"}</td><td class="n">${x.R??"–"}</td><td class="n">${pct(x)}</td>${prev?`<td class="n">${p?pct(p):"–"}</td>`:""}</tr>`; }).join("")}
+      ${last.extDeficit!=null?`<tr><td>Right knee short of straight</td><td colspan="${prev?4:3}">${last.extDeficit}°${prev&&prev.extDeficit!=null?` (before: ${prev.extDeficit}°)`:""}</td></tr>`:""}</table>
+      ${last.notes?`<p class="rep-note">${esc(last.notes)}</p>`:""}</section>`;
+  }
+  if(D.ss.length){
+    const eff = D.ss.filter(r=>r.pre&&r.post), dR = avg(eff.map(r=>r.post.heavy-r.pre.heavy)), dL = avg(eff.filter(r=>r.pre.heavyL!=null).map(r=>(r.post.heavyL??0)-r.pre.heavyL));
+    const offs = {}; D.st.forEach(r=>r.ex.forEach(e=>{ if(e.lOff||e.rOff){ const o = offs[e.name] || (offs[e.name] = {l:0,r:0}); if(e.lOff) o.l++; if(e.rOff) o.r++; } }));
+    const offList = Object.entries(offs).sort((a,b)=>(b[1].r+b[1].l)-(a[1].r+a[1].l)).slice(0,5);
+    h += `<section><h2>Exercise</h2><p>${D.st.length} strength and ${D.cond.length} conditioning sessions, ${f1(D.ss.length/(days/7))} a week.${eff.length?` Average change in heaviness from before to after a session: left ${dL==null?"–":(dL>0?"+":"")+f1(dL)}, right ${(dR>0?"+":"")+f1(dR)}.`:""}</p>
+      ${offList.length?`<p>Exercises where a leg felt off: ${offList.map(([n,o])=>`${esc(n)} (${[o.l?`left ${o.l}`:"",o.r?`right ${o.r}`:""].filter(Boolean).join(", ")})`).join("; ")}.</p>`:""}</section>`;
+  }
+  if(D.symptoms.length) h += `<section><h2>Symptom changes logged</h2>${D.symptoms.map(y=>`<p>${esc(fmtShort(y.date))}${y.time?` ${esc(y.time)}`:""}: ${esc((y.what||[]).join(", ").toLowerCase())}${y.doing&&y.doing.length?`, while ${esc(y.doing.join(", ").toLowerCase())}`:""}${y.lasted?`, lasted ${esc(y.lasted.toLowerCase())}`:""}.${y.note?` ${esc(y.note)}`:""}</p>`).join("")}</section>`;
+  if(D.cis.length){
+    const cel = D.cis.filter(c=>c.meds&&c.meds.celecoxib).length, par = D.cis.filter(c=>c.meds&&c.meds.paracetamol).length, hx = D.cis.filter(c=>c.homeEx).length;
+    h += `<section><h2>Medication and home exercise</h2><p>Out of ${D.cis.length} check-ins: celecoxib on ${cel} days, paracetamol on ${par}, home physio exercises on ${hx}.</p></section>`;
+  }
+  const fl = recs(["flight"]).filter(r=>r.date>=D.from);
+  if(fl.length) h += `<section><h2>Flights</h2>${fl.map(r=>`<p>${esc(fmtShort(r.date))}: ${esc(flightSummary(r))}</p>`).join("")}</section>`;
+  const mp = medPattern(D.cis);
+  if(mp.length) h += `<section><h2>Medication and heaviness</h2><p class="rep-note">Average scores on days taken versus not. A pattern only: days with medication may have been worse to begin with.</p>${medTable(mp)}</section>`;
+  const stLast = [...D.cis].reverse().find(c=>c.test && ["stsL","brL","calfL","toeL"].some(k=>c.test[k]!=null));
+  if(stLast){ const t = stLast.test, pr = (n,l,r) => l==null||r==null ? "" : `<tr><td>${n}</td><td class="n">${l}</td><td class="n">${r}</td><td class="n">${l?Math.round(r/l*100)+"%":"–"}</td></tr>`;
+    h += `<section><h2>Self-tests</h2><p class="rep-note">Latest ${esc(fmtShort(stLast.date))}, reps.</p><table class="ext"><tr><th>Test</th><th class="n">Left</th><th class="n">Right</th><th class="n">R as % of L</th></tr>
+      ${pr("Single-leg sit to stand (30 s)",t.stsL,t.stsR)}${pr("Single-leg bridge",t.brL,t.brR)}${pr("Single-leg calf raise",t.calfL,t.calfR)}${pr("Toe raise, heels down",t.toeL,t.toeR)}</table></section>`; }
+  if(D.versions.length) h += `<section><h2>Program changes</h2>${D.versions.map(v=>`<p>${esc(versionLabel(v))}: ${esc(v.changes.slice(0,6).map(c=>({add:"added ",remove:"removed ",move:"moved "}[c.kind]||"changed ")+c.name+(c.details&&c.details.length&&c.kind==="change"?` (${c.details.slice(0,2).join(", ")})`:"")).join("; "))}${v.changes.length>6?"…":""}</p>`).join("")}</section>`;
+  const qs = D.questions.filter(q=>!who || who==="Anyone" || q.who===who || q.who==="Anyone");
+  if(qs.length) h += `<section><h2>Questions</h2><ol>${qs.map(q=>`<li>${esc(q.text)}</li>`).join("")}</ol></section>`;
+  h += `<p class="rep-foot">Recorded by the patient in a personal app. Scores are self-rated and not a clinical assessment.</p>`;
+  return h;
+}
+function viewReport(){
+  const R = S.rep;
+  return backBtn("Today") + `<div class="noprint"><header class="top"><div><h1>Clinic report</h1><p class="sub">A summary of your log to show your GP, physio or neurologist.</p></div></header>
+    <div class="card"><div class="q"><p>Covering the last</p>${chips("r:days",REP_RANGE,R.days)}</div>
+    <div class="q"><p>For</p>${pick("r:who",WHO,R.who)}</div>
+    <label class="field"><span>Your name on the report (optional)</span><input type="text" value="${esc(S.settings.name||"")}" data-bind="s:name"></label></div>
+    <div class="row"><button class="btn primary" data-a="rep-save">Save as file</button><button class="btn" data-a="rep-copy">Copy as text</button></div>
+    <p class="small" style="margin:8px 0 14px">Or just show this screen at your appointment.</p></div>
+    <div class="card report">${reportBody(R.days,R.who)}</div>`;
+}
+const REP_CSS = `:root{--bg:#fff;--surface:#fff;--ink:#16272B;--muted:#56686C;--line:#C9D5D2;--accent:#24675F;--right:#B97A06;--danger:#B3261E;--danger-soft:#F8DDDA}
+body{font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif;color:var(--ink);max-width:720px;margin:24px auto;padding:0 18px;line-height:1.4;font-size:15px}
+h1{font-size:1.7rem;margin:0 0 4px}h2{font-size:1.15rem;margin:18px 0 6px;border-bottom:2px solid var(--line);padding-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:.92rem}td.n{white-space:nowrap}th{text-align:left;color:var(--muted);font-weight:600;padding:5px 4px;border-bottom:1px solid var(--line)}td{padding:6px 4px;border-bottom:1px solid var(--line);vertical-align:top}.n{text-align:right}
+.chart{width:100%;max-width:520px;display:block;margin-top:8px}.chart text{font-size:10px;fill:var(--muted)}.legend{display:flex;gap:14px;font-size:.85rem;color:var(--muted)}.legend i{display:inline-block;width:14px;height:4px;margin-right:6px;vertical-align:middle}
+.rep-note,.rep-src{color:var(--muted);font-size:.9rem}.rep-bad{color:var(--danger);font-weight:700}.rep-foot{margin-top:20px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:8px}
+@media print{body{margin:0}h2{break-after:avoid}section{break-inside:avoid}}`;
+function reportText(days, who){
+  const tmp = document.createElement("div"); tmp.innerHTML = reportBody(days, who);
+  tmp.querySelectorAll("svg,.legend").forEach(e=>e.remove());
+  tmp.querySelectorAll("tr").forEach(tr=>{ tr.textContent = Array.from(tr.children).map(c=>c.textContent.trim()).filter(Boolean).join(" | "); });
+  tmp.querySelectorAll("h1,h2,p,li,tr").forEach(e=>{ e.prepend(document.createTextNode("\n")); });
+  tmp.querySelectorAll("h2").forEach(e=>{ e.append(document.createTextNode("\n")); });
+  return tmp.textContent.split("\n").map(l=>l.trim()).join("\n").replace(/\n{3,}/g,"\n\n").trim();
+}
+function saveReport(){
+  const R = S.rep, name = `rehab-report-${today()}.html`;
+  const html = `<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Rehab log summary</title><style>${REP_CSS}</style></head><body>${reportBody(R.days,R.who)}</body></html>`;
+  if(downloadFile(name, html, "text/html")) toast("Report saved to your Downloads"); else filesText("Report as text", reportText(R.days,R.who));
+}
+
+/* ---------- flight mode ---------- */
+function flightDefault(){
+  const t = tolStats("sit");
+  if(!t) return {mins:45, why:"No timed sitting tests yet, so this starts at 45 minutes."};
+  const m = Math.max(20, Math.min(60, Math.floor(t.median*0.66/5)*5));
+  return {mins:m, why:`About two-thirds of your median sitting time of ${fmtMin(t.median)}, so you move before heaviness usually starts.`};
+}
+function saveFlight(){ store("rl.flight.v1", S.flight); }
+function flightNew(){
+  const d = flightDefault(), last = lastSymptoms();
+  S.flight = {id:"f-"+uid(), stage:"setup", interval:d.mins, awake:true, pre:{heavyL:last.heavyL??0, heavyR:last.heavy??0}, breaks:[], snoozes:0, note:""};
+  saveFlight(); go("flight");
+}
+function flightStart(){
+  const F = S.flight; F.stage = "run"; F.startedAt = Date.now(); F.nextAt = Date.now()+F.interval*60000; F.paused = false;
+  saveFlight(); unlockAudio(); if(F.awake) keepAwake(true); render(false); window.scrollTo(0,0);
+}
+function flightAlert(){ beep(880,.3); setTimeout(()=>beep(1175,.4),350); buzz([400,150,400,150,400]); }
+function flightTick(){
+  const F = S.flight; if(!F || F.paused) return;
+  const now = Date.now();
+  if(F.stage==="run" && now>=F.nextAt){
+    const last = lastBreakRating();
+    F.stage = "break"; F.dueAt = F.nextAt; F.alerts = 1; F.bk = {heavyL:last.heavyL, heavyR:last.heavyR};
+    saveFlight(); flightAlert(); if(S.view==="flight") render(false); else toast("Flight Mode: time to move");
+    return;
+  }
+  if(F.stage==="break" && F.alerts<3 && now-F.dueAt >= F.alerts*60000){ F.alerts++; saveFlight(); flightAlert(); }
+  if(S.view==="flight" && F.stage==="run"){
+    const left = (F.nextAt-now)/1000, el = document.getElementById("fl-time"); if(el) el.textContent = hmmss(left);
+    const ring = document.getElementById("fl-ring"); if(ring) ring.style.strokeDashoffset = (552.9*(1-Math.max(0,Math.min(1,left/(F.interval*60))))).toFixed(1);
+    const tot = document.getElementById("fl-total"); if(tot) tot.textContent = fmtMin((now-F.startedAt)/60000);
+  }
+}
+function lastBreakRating(){
+  const F = S.flight, b = [...F.breaks].reverse().find(x=>!x.skipped);
+  return b ? {heavyL:b.heavyL, heavyR:b.heavyR} : {heavyL:F.pre.heavyL, heavyR:F.pre.heavyR};
+}
+function movesHtml(){
+  const mv = S.settings.flightMoves || [];
+  return mv.length ? `<ol style="padding-left:22px;margin:6px 0">${mv.map(m=>`<li>${esc(m)}</li>`).join("")}</ol>`
+    : `<p class="small">No moves from your physio yet. Stand up and walk the aisle if you can.</p>`;
+}
+function viewFlight(){
+  const F = S.flight;
+  if(!F) return backBtn("Today") + `<header class="top"><div><h1>Flight Mode</h1><p class="sub">Movement breaks for a long flight, timed from your own sitting tests.</p></div></header>
+    <button class="action main" data-a="fl-new"><strong>Set up a flight</strong><span>${esc(flightDefault().why)}</span></button>
+    ${movesCard()}`;
+  if(F.stage==="setup"){
+    const d = flightDefault(), opts = [30,40,45,50,60,75].map(v=>({v,l:`${v} min`}));
+    if(!opts.some(o=>o.v===d.mins)) opts.unshift({v:d.mins,l:`${d.mins} min`});
+    return backBtn("Today") + `<header class="top"><div><h1>Set up your flight</h1><p class="sub">Start when you sit down on the plane.</p></div></header>
+      <div class="card"><div class="q"><p>Break every</p>${chips("f:interval",opts,F.interval)}</div><p class="small">Suggested ${d.mins} min. ${esc(d.why)} Change it if your physio or GP has advised otherwise.</p>
+      <div class="checks" style="margin-top:12px"><label><input type="checkbox" data-bind="f:awake"${F.awake?" checked":""}>Keep the screen on</label></div>
+      <p class="small">Reminders can only sound while the screen is on. Plug into seat power if you can, or set your phone's own timer as a backup.</p></div>
+      <div class="card">${legPair("Leg heaviness now","f:pre.heavyL","f:pre.heavyR",F.pre.heavyL,F.pre.heavyR,"None","Worst",false)}</div>
+      ${movesCard()}
+      <button class="btn primary" data-a="fl-start">Start Flight Mode</button><button class="btn ghost" data-a="fl-cancel">Cancel</button>`;
+  }
+  if(F.stage==="break"){
+    const late = Math.round((Date.now()-F.dueAt)/60000);
+    return `<header class="top"><div><h1>Time to move</h1><p class="sub">Break ${F.breaks.filter(b=>!b.skipped).length+1}${late>=2?`, due ${late} min ago`:""}.</p></div></header>
+      <div class="card"><h3>Moves</h3>${movesHtml()}</div>
+      <div class="card">${legPair("Leg heaviness right now","f:bk.heavyL","f:bk.heavyR",F.bk.heavyL,F.bk.heavyR,"None","Worst",false)}</div>
+      <button class="btn primary" data-a="fl-done">Break done</button>
+      <div class="row" style="margin-top:10px"><button class="btn" data-a="fl-snooze">Seatbelt sign on, remind me in 10 min</button></div>
+      <button class="btn ghost" data-a="fl-skip">Skip this break</button>`;
+  }
+  if(F.stage==="end"){
+    return `<header class="top"><div><h1>Flight finished</h1><p class="sub">${fmtMin((F.endedAt-F.startedAt)/60000)} with ${F.breaks.filter(b=>!b.skipped).length} break${F.breaks.filter(b=>!b.skipped).length===1?"":"s"}.</p></div></header>
+      <div class="card">${legPair("Leg heaviness now","f:end.heavyL","f:end.heavyR",F.end.heavyL,F.end.heavyR,"None","Worst",false)}
+      <label class="field"><span>Notes</span><textarea class="note" data-bind="f:note" placeholder="What helped, what didn't">${esc(F.note)}</textarea></label></div>
+      <button class="btn primary" data-a="fl-save">Save flight</button><button class="btn ghost" data-a="fl-resume-run">Back to the timer</button><button class="btn danger" style="min-height:44px" data-a="fl-discard">Discard this flight</button>`;
+  }
+  const left = F.paused ? F.pausedLeft/1000 : (F.nextAt-Date.now())/1000;
+  const done = F.breaks.filter(b=>!b.skipped), last = done[done.length-1];
+  return `<header class="top"><div><h1>Flight Mode</h1><p class="sub">In the air <span id="fl-total">${fmtMin((Date.now()-F.startedAt)/60000)}</span>. ${done.length} break${done.length===1?"":"s"} so far.</p></div></header>
+    <div class="card"><div class="ringwrap"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="ring-bg" cx="100" cy="100" r="88"/><circle id="fl-ring" class="ring-fg${F.paused?" rest":""}" cx="100" cy="100" r="88" style="stroke-dashoffset:${(552.9*(1-Math.max(0,Math.min(1,left/(F.interval*60))))).toFixed(1)}"/></svg>
+      <div class="ring-center"><div class="ring-phase">${F.paused?"Paused":"Next break"}</div><div class="ring-time" id="fl-time" style="font-size:3.4rem">${hmmss(left)}</div><div class="ring-sub">Every ${F.interval} min</div></div></div>
+      ${last?`<p class="small" style="text-align:center">Last break: left ${last.heavyL}, right ${last.heavyR}</p>`:""}
+      <div class="row">${F.paused?`<button class="btn primary" data-a="fl-resume">Resume</button>`:`<button class="btn" data-a="fl-pause">Pause for sleep</button>`}<button class="btn" data-a="fl-now">Break now</button></div>
+      <button class="btn ghost" data-a="fl-end">Finish flight</button></div>`;
+}
+function movesCard(){
+  const mv = S.settings.flightMoves || [], hasQ = recs(["question"]).some(q=>!q.answered && /flight/i.test(q.text));
+  return `<details class="card"${mv.length?"":" open"}><summary>Moves from your physio (${mv.length})</summary>
+    <p class="small" style="margin-top:8px">These show at every break. Add what your physio suggests for in your seat and in the aisle.</p>
+    ${mv.map((m,k)=>`<div class="q-item"><p>${esc(m)}</p><button class="mini" data-a="mv-del" data-k="${k}">Remove</button></div>`).join("")}
+    <label class="field" style="margin-top:10px"><span>Add a move</span><input type="text" id="mv-new" placeholder="For example: 10 seated knee extensions each leg"></label>
+    <button class="btn" style="min-height:44px" data-a="mv-add">Add move</button>
+    ${!mv.length && !hasQ ? `<button class="btn ghost" data-a="mv-ask">Add "which moves on the flight?" to my questions</button>` : ""}</details>`;
+}
+function flightSummary(r){
+  const b = r.breaks.filter(x=>!x.skipped), mxL = Math.max(r.pre.heavyL, ...b.map(x=>x.heavyL)), mxR = Math.max(r.pre.heavyR, ...b.map(x=>x.heavyR));
+  return `${fmtMin(r.minutes)}, ${b.length} break${b.length===1?"":"s"} every ${r.interval} min${r.breaks.length>b.length?`, ${r.breaks.length-b.length} skipped`:""}. Heaviness at start L ${r.pre.heavyL} R ${r.pre.heavyR}, highest L ${mxL} R ${mxR}, at the end L ${r.end.heavyL} R ${r.end.heavyR}.`;
+}
+
+/* ---------- medication patterns ---------- */
+function medPattern(cis){
+  const out = [];
+  [["celecoxib","Celecoxib"],["paracetamol","Paracetamol"]].forEach(([k,name])=>{
+    const on = cis.filter(c=>c.meds && c.meds[k]), off = cis.filter(c=>!(c.meds && c.meds[k]));
+    if(on.length<3 || off.length<3) return;
+    out.push({name, nOn:on.length, nOff:off.length,
+      hL:[avg(on.map(c=>c.peakL)), avg(off.map(c=>c.peakL))], hR:[avg(on.map(c=>c.peak)), avg(off.map(c=>c.peak))],
+      sit:[avg(on.filter(c=>c.sit!=null&&c.sit<900).map(c=>c.sit)), avg(off.filter(c=>c.sit!=null&&c.sit<900).map(c=>c.sit))]});
+  });
+  return out;
+}
+function medTable(rows){
+  return rows.map(m=>`<p style="font-weight:600;margin-top:10px">${m.name}: taken ${m.nOn} days, not taken ${m.nOff}</p>
+    <div class="tablewrap"><table class="ext"><tr><th></th><th class="n">Taken</th><th class="n">Not taken</th></tr>
+    <tr><td>Left worst heaviness</td><td class="n">${f1(m.hL[0])}</td><td class="n">${f1(m.hL[1])}</td></tr>
+    <tr><td>Right worst heaviness</td><td class="n">${f1(m.hR[0])}</td><td class="n">${f1(m.hR[1])}</td></tr>
+    ${m.sit[0]!=null&&m.sit[1]!=null?`<tr><td>Sitting estimate (min)</td><td class="n">${Math.round(m.sit[0])}</td><td class="n">${Math.round(m.sit[1])}</td></tr>`:""}</table></div>`).join("");
+}
+
+/* ---------- render ---------- */
+const VIEWS = {home:viewHome, session:viewSession, checkin:viewCheckin, program:viewProgram, trends:viewTrends,
+  import:viewImport, guide:viewGuide, tol:viewTol, report:viewReport, flight:viewFlight, retest:viewRetest, questions:viewQuestions, symptom:viewSymptom};
+const TABOF = {flight:"home", tol:"home", report:"home", import:"program", retest:"home", questions:"home", symptom:"home"};
+function render(keepScroll){
+  const y = window.scrollY;
+  if((S.view==="retest" && !S.rt) || (S.view==="symptom" && !S.sym) || (S.view==="import" && !S.imp) || (S.view==="guide" && !S.guide)) S.view = "home";
+  document.getElementById("main").innerHTML = VIEWS[S.view]();
+  const tab = S.view==="guide" ? S.guideBack : (TABOF[S.view] || S.view);
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("on", b.dataset.v===tab));
+  if(keepScroll!==false) window.scrollTo(0,y);
+}
+function go(v){ S.view = v; if(v!=="program") S.edit = null; if(v==="checkin") openCheckin(); render(false); window.scrollTo(0,0); }
+
+/* ---------- timers ---------- */
+const CIRC = 552.9;
+const T = {mode:null, running:false, endAt:0, left:0, dur:0, phase:null, set:1, lastSec:null, hold:null};
+const R = {on:false, endAt:0, dur:0, last:null};
+function resetTimers(){ T.mode=null; T.running=false; T.phase=null; T.set=1; T.hold=null; R.on=false; updRest(); document.getElementById("hold").hidden = true; keepAwake(false); }
+
+function restStart(sec){ R.on = true; R.dur = sec*1000; R.endAt = Date.now()+R.dur; R.last = null; R.over = false; updRest(); }
+function updRest(){
+  const el = document.getElementById("rest");
+  if(!R.on){ el.hidden = true; return; }
+  el.hidden = false;
+  const left = R.endAt - Date.now();
+  document.getElementById("rest-time").textContent = left>0 ? mmss(left/1000) : "Go";
+  document.getElementById("rest-fill").style.width = Math.max(0,Math.min(100,(1-left/R.dur)*100))+"%";
+  document.getElementById("rest-in").classList.toggle("over", left<=0);
+}
+
+function holdStart(i,j,side){
+  unlockAudio();
+  const ex = S.active.ex[i];
+  T.mode = "hold"; T.hold = {i,j,side,secs:ex.secs||30,phase:"ready",start:0};
+  T.dur = 5000; T.endAt = Date.now()+T.dur; T.running = true; T.lastSec = null;
+  document.getElementById("hold-name").textContent = ex.name + (side ? (side==="L"?", left side":", right side") : "");
+  document.getElementById("hold").hidden = false; keepAwake(true); updHold();
+}
+function updHold(){
+  const h = T.hold; if(!h) return;
+  const left = T.endAt - Date.now();
+  document.getElementById("hold-phase").textContent = h.phase==="ready" ? "Get into position" : "Hold";
+  document.getElementById("hold-time").textContent = h.phase==="ready" ? Math.max(0,Math.ceil(left/1000)) : mmss(left/1000);
+  const ring = document.getElementById("hold-ring");
+  ring.classList.toggle("ready", h.phase==="ready");
+  ring.style.strokeDashoffset = (CIRC*(1-Math.max(0,Math.min(1,left/T.dur)))).toFixed(1);
+}
+function holdFinish(full){
+  const h = T.hold; if(!h) return;
+  const ex = S.active.ex[h.i], s = ex.log[h.j];
+  if(h.phase==="hold"){
+    const val = full ? h.secs : Math.min(h.secs, Math.round((Date.now()-h.start)/1000));
+    if(h.side) s["secs"+h.side] = val; else s.secs = val;
+    if(!ex.sided || (s.secsL!=null && s.secsR!=null)) s.done = true;
+  }
+  T.mode = null; T.running = false; T.hold = null;
+  document.getElementById("hold").hidden = true; keepAwake(false);
+  saveActive(); render();
+  if(s.done && h.phase==="hold") maybeRest(h.i,h.j);
+}
+function holdCancel(){ T.mode=null; T.running=false; T.hold=null; document.getElementById("hold").hidden = true; keepAwake(false); }
+function maybeRest(i,j){
+  const ex = S.active.ex; const lastEx = i===ex.length-1 && j===ex[i].log.length-1;
+  if(!lastEx) restStart(S.settings.restSec||90);
+}
+
+function ivStart(){
+  unlockAudio();
+  if(T.mode!=="interval" || !T.phase || T.phase==="done"){ T.mode="interval"; T.phase="ready"; T.set=1; T.dur=5000; T.endAt=Date.now()+5000; }
+  else T.endAt = Date.now()+T.left;
+  T.running = true; T.lastSec = null; keepAwake(true); render();
+}
+function ivPause(){ T.left = T.endAt-Date.now(); T.running = false; keepAwake(false); render(); }
+function ivReset(){ T.mode=null; T.running=false; T.phase=null; T.set=1; keepAwake(false); render(); }
+function ivAdvance(){
+  const c = S.active.cond;
+  if(T.phase==="ready" || T.phase==="rest"){
+    if(T.phase==="rest") T.set++;
+    T.phase = "work"; T.dur = c.work*1000; beep(1046,.35); buzz(300);
+  } else if(T.phase==="work"){
+    c.done = Math.max(c.done||0, T.set); saveActive();
+    if(T.set >= c.sets){ T.running=false; T.phase="done"; keepAwake(false); beep(1318,.7); buzz([300,100,300,100,300]); render(); return; }
+    T.phase = "rest"; T.dur = c.rest*1000; beep(523,.35); buzz(150);
+  }
+  T.endAt = Date.now()+T.dur; T.lastSec = null; render();
+}
+function updIv(ms){
+  const t = document.getElementById("iv-time"); if(!t) return;
+  t.textContent = mmss(ms/1000);
+  const ring = document.getElementById("iv-ring"); if(ring) ring.style.strokeDashoffset = (CIRC*(1-Math.max(0,Math.min(1,ms/T.dur)))).toFixed(1);
+}
+function tick(){
+  const now = Date.now();
+  if(R.on){
+    const s = Math.ceil((R.endAt-now)/1000);
+    if(s!==R.last){ R.last = s; if(s<=3 && s>0) beep(660,.08); if(s===0 && !R.over){ R.over = true; beep(990,.35); buzz([200,100,200]); } }
+    updRest();
+  }
+  if(T.running && T.mode==="interval"){
+    const ms = T.endAt-now, s = Math.ceil(ms/1000);
+    if(s!==T.lastSec){ T.lastSec = s; if(s<=3 && s>0) beep(784,.08); }
+    if(ms<=0) ivAdvance(); else updIv(ms);
+  }
+  if(T.running && T.mode==="hold" && T.hold){
+    const ms = T.endAt-now, s = Math.ceil(ms/1000);
+    if(s!==T.lastSec){ T.lastSec = s; if(s<=3 && s>0) beep(784,.08); }
+    if(ms<=0){
+      if(T.hold.phase==="ready"){ T.hold.phase="hold"; T.hold.start=now; T.dur=T.hold.secs*1000; T.endAt=now+T.dur; T.lastSec=null; beep(1046,.3); buzz(250); }
+      else { beep(1318,.5); buzz([250,100,250]); holdFinish(true); return; }
+    }
+    updHold();
+  }
+}
+setInterval(()=>{ tick(); tolTick(); flightTick(); },250);
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"){ if(T.running || S.tol || (S.flight && S.flight.awake && ["run","break"].includes(S.flight.stage))) keepAwake(true); flightTick(); tick();  } });
+
+/* ---------- events ---------- */
+document.addEventListener("input", e=>{
+  const el = e.target, b = el.dataset.bind; if(!b) return;
+  let v = el.type==="checkbox" ? el.checked : el.value;
+  if(el.dataset.num) v = v==="" ? null : Number(v);
+  setBind(b,v);
+  if(el.dataset.out){ const o = document.getElementById(el.dataset.out); if(o) o.textContent = v; }
+  if(el.dataset.leg) updLeg(el);
+  if(el.dataset.rerender) render();
+});
+document.addEventListener("change", e=>{
+  const el = e.target; if(!el || el.type!=="file" || el.dataset.imp!=="backup") return;
+  const f = el.files && el.files[0]; el.value = ""; if(f) restoreBackup(f);
+});
+document.addEventListener("toggle", e=>{ const d = e.target; if(d && d.dataset && d.dataset.ob) S.ob[d.dataset.ob] = d.open; }, true);
+document.addEventListener("click", e=>{
+  const el = e.target.closest("[data-a]"); if(!el) return;
+  const a = el.dataset.a, A = S.active;
+  switch(a){
+    case "nav": go(el.dataset.v); break;
+    case "start-strength": if(A) ask("You have a session in progress. Discard it and start a new one?","Discard and start",startStrength,{danger:true}); else startStrength(); break;
+    case "start-cond": if(A) ask("You have a session in progress. Discard it and start a new one?","Discard and start",startCond,{danger:true}); else startCond(); break;
+    case "pick-cond": { const c = S.settings.program.conditioning.find(x=>x.id===el.dataset.id); A.cond = {pid:c.id, erg:c.erg, work:c.work, rest:c.rest, sets:c.sets, rpeTarget:c.rpe, done:0, rpe:null, rOff:false}; saveActive(); render(); break; }
+    case "begin": A.stage = "work"; saveActive(); render(false); window.scrollTo(0,0); break;
+    case "finish": A.stage = "post"; A.post = A.post || clone(A.pre); R.on = false; updRest(); if(T.running) ivPause(); saveActive(); render(false); window.scrollTo(0,0); break;
+    case "back-work": A.stage = "work"; saveActive(); render(false); break;
+    case "save-session": {
+      const r = clone(A); delete r.stage; r.endedAt = Date.now();
+      putRecord(r); S.active = null; saveActive(); resetTimers();
+      const d = r.post.heavy - r.pre.heavy, dl = (r.post.heavyL??0) - (r.pre.heavyL??0);
+      toast(d>0||dl>0 ? `Saved. ${d>0&&dl>0?"Both legs":d>0?"Right leg":"Left leg"} felt heavier afterwards` : d<0||dl<0 ? "Saved. Legs felt lighter afterwards" : "Session saved");
+      go("home"); break;
+    }
+    case "discard": ask("Discard this session? Nothing will be saved.","Discard session",()=>{ S.active = null; saveActive(); resetTimers(); go("home"); },{danger:true}); break;
+    case "step": {
+      const b = el.dataset.bind, cur = getPath(rootFor(b[0]), b.slice(2)) || 0;
+      setBind(b, Math.max(0, cur + Number(el.dataset.d))); render(); break;
+    }
+    case "done": {
+      const i = +el.dataset.i, j = +el.dataset.j, s = A.ex[i].log[j];
+      s.done = !s.done; saveActive(); render();
+      if(s.done){ unlockAudio(); maybeRest(i,j); } break;
+    }
+    case "hold": holdStart(+el.dataset.i, +el.dataset.j, el.dataset.side); break;
+    case "hold-stop": holdFinish(false); break;
+    case "hold-cancel": holdCancel(); break;
+    case "rest-add": R.endAt += 15000; R.dur += 15000; R.over = false; updRest(); break;
+    case "rest-sub": R.endAt -= 15000; updRest(); break;
+    case "rest-skip": R.on = false; updRest(); break;
+    case "roff": { const ex = A.ex[+el.dataset.i]; ex.rOff = !ex.rOff; saveActive(); render(); break; }
+    case "roff-c": A.cond.rOff = !A.cond.rOff; saveActive(); render(); break;
+    case "loff": { const ex = A.ex[+el.dataset.i]; ex.lOff = !ex.lOff; saveActive(); render(); break; }
+    case "loff-c": A.cond.lOff = !A.cond.lOff; saveActive(); render(); break;
+    case "iv-start": ivStart(); break;
+    case "iv-pause": ivPause(); break;
+    case "iv-reset": ivReset(); break;
+    case "chip": {
+      const b = el.dataset.bind, v = Number(el.dataset.val), cur = getPath(rootFor(b[0]), b.slice(2));
+      setBind(b, cur===v && b[0]==="c" ? null : v); render(); break;
+    }
+    case "ci-save": {
+      const c = clone(S.checkin); delete c._fromPrev;
+      putRecord(c); S.checkin = clone(c);
+      const flagged = Object.values(c.flags||{}).some(Boolean);
+      toast(flagged ? "Saved. Please get urgent medical assessment" : "Check-in saved");
+      go("home"); break;
+    }
+    case "hist": S.histTab = el.dataset.v; render(); break;
+    case "rec-toggle": S.open[el.dataset.id] = !S.open[el.dataset.id]; render(); break;
+    case "rec-del": { const id = el.dataset.id; ask("Delete this entry? This can't be undone.","Delete",()=>{ delRecord(id); render(); },{danger:true}); break; }
+    case "prog-reset": ask("Replace your program with the September 2026 sheet? You can go back to this version from Program history.","Reset program",()=>{ const np = clone(DEFAULT_PROGRAM); commitProgram(np,"manual",progDiff(S.settings.program,np),"Reset to September 2026 sheet"); render(); toast("Program reset"); },{danger:true}); break;
+    case "copy-program": filesText("Your program", programText(S.settings.program)); break;
+    case "pe-add": { const blk = el.dataset.blk;
+      S.edit = {blk, k:-1, draft: blk==="conditioning" ? {id:"", erg:"", work:30, rest:30, sets:4, rpe:5} : {id:"x"+Date.now().toString(36), name:"", sets:2, target:"10 reps", kind:"reps", reps:10, rpe:5, notes:"", sided:false, weight:false, kg:null}};
+      render(); break; }
+    case "pe-edit": S.edit = {blk:el.dataset.blk, k:+el.dataset.k, draft:clone(S.settings.program[el.dataset.blk][+el.dataset.k])}; render(); break;
+    case "pe-cancel": S.edit = null; render(); break;
+    case "pe-save": {
+      const E = S.edit, P2 = clone(S.settings.program), d = clone(E.draft), isC = E.blk==="conditioning";
+      if(isC){ d.id = String(d.id||"").trim(); if(!d.id){ toast("Give the session a name or letter"); break; } d.work = d.work||30; d.rest = d.rest??30; d.sets = d.sets||1; }
+      else { d.name = String(d.name||"").trim(); if(!d.name){ toast("Give the exercise a name"); break; } d.sets = Math.max(1,d.sets||1); if(!String(d.target||"").trim()) d.target = d.kind==="reps"?`${d.reps||10} reps`:d.kind==="time"?`${d.secs||30} s`:"as set"; if(d.kind==="time" && !d.secs) d.secs = 30; if(d.kind==="reps" && !d.reps) d.reps = 10; }
+      const nm = isC ? condName(d) : d.name; const changes = [];
+      if(E.k<0){ P2[E.blk].push(d); changes.push({kind:"add", block:E.blk, name:nm}); }
+      else { const old = P2[E.blk][E.k]; const det = fieldDiff(old,d,isC?CONDF:EXF); if(!isC && old.name!==d.name) det.unshift(`Renamed from ${old.name}`); if(isC && old.id!==d.id) det.unshift(`Renamed from ${old.id}`); P2[E.blk][E.k] = d; if(det.length) changes.push({kind:"change", block:E.blk, name:nm, details:det}); }
+      S.edit = null; toast(commitProgram(P2,"manual",changes) ? (E.k<0?"Added":"Saved") : "No changes"); render(); break;
+    }
+    case "pe-del": { const E = S.edit, P2 = clone(S.settings.program), old = P2[E.blk][E.k];
+      ask("Remove this from your program? Past sessions keep their records.","Remove",()=>{ P2[E.blk].splice(E.k,1); commitProgram(P2,"manual",[{kind:"remove", block:E.blk, name:E.blk==="conditioning"?condName(old):old.name}]); S.edit = null; render(); toast("Removed"); },{danger:true}); break; }
+    case "pe-move": { const blk = el.dataset.blk, k = +el.dataset.k, d = +el.dataset.d, P2 = clone(S.settings.program), L = P2[blk];
+      if(k+d<0 || k+d>=L.length) break; const it = L[k]; L[k] = L[k+d]; L[k+d] = it;
+      commitProgram(P2,"manual",[{kind:"move", block:blk, name:blk==="conditioning"?condName(it):it.name, details:[d<0?"Up one place":"Down one place"]}]); render(); break; }
+    case "pe-pause": { const blk = el.dataset.blk, k = +el.dataset.k, P2 = clone(S.settings.program), it = P2[blk][k];
+      it.paused = !it.paused; commitProgram(P2,"manual",[{kind:"change", block:blk, name:it.name, details:[it.paused?"Paused":"Resumed"]}]); render(); toast(it.paused?"Paused. Left out of sessions":"Back in your sessions"); break; }
+    case "ver-restore": { const v = versionsList().find(x=>x.id===el.dataset.id); if(!v || !v.program) break;
+      ask(`Go back to "${versionLabel(v)}"? This becomes a new version, so you can undo it.`,"Go back",()=>{ const np = clone(v.program); commitProgram(np,"manual",progDiff(S.settings.program,np),`Back to ${versionLabel(v)}`); render(false); window.scrollTo(0,0); toast("Program restored"); }); break; }
+    case "imp-open": S.imp = {text:"", error:"", result:null, label:"", scope:"changes", restart:false}; go("import"); break;
+    case "imp-parse": { const r = parseCode(S.imp.text); if(r.error){ S.imp.error = r.error; render(); break; } Object.assign(S.imp, {error:"", result:r.result, label:r.label, scope:r.scope, restart:r.scope==="full"}); render(false); window.scrollTo(0,0); break; }
+    case "pe-add-top": { S.edit = {blk:"gym", k:-1, draft:{id:"x"+Date.now().toString(36), name:"", sets:2, target:"10 reps", kind:"reps", reps:10, rpe:5, notes:"", sided:false, weight:false, kg:null}}; S.ob.gym = true; S.imp = null; go("program"); setTimeout(()=>{ const ed = document.querySelector(".editor"); if(ed) ed.scrollIntoView({block:"start"}); },50); break; }
+    case "pe-blk": { if(S.edit && S.edit.k<0){ S.ob[el.dataset.v] = true; S.edit.blk = el.dataset.v; render(); setTimeout(()=>{ const ed = document.querySelector(".editor"); if(ed) ed.scrollIntoView({block:"start"}); },50); } break; }
+    case "cue-ask": copyRequest(cueRequest(S.guide)); break;
+    case "restore-paste": ask("Paste the backup text","Restore",v=>{ if(v && v.trim()) restoreText(v.trim()); },{text:"Paste your backup here"}); break;
+    case "claude-data": filesText("Your data for Claude", claudeData()); break;
+    case "imp-discard": S.imp = null; go("program"); break;
+    case "imp-apply": { const I = S.imp, r = I.result;
+      if(r.cues.length){ S.settings.cues = S.settings.cues || {}; r.cues.forEach(c=>{ S.settings.cues[norm(c.name)] = {card:c.card, at:Date.now(), rating:null}; }); S.settings.updatedAt = Date.now(); persist(); }
+      if(!r.changes.length){ S.imp = null; go("program"); toast(`${r.cues.length} cue card${r.cues.length>1?"s":""} saved`); break; }
+      commitProgram(r.np,"import",r.changes,(I.label||"Physio plan").trim());
+      if(I.restart){ S.settings.programStart = today(); S.settings.updatedAt = Date.now(); persist(); }
+      S.imp = null; go("program"); toast("New program applied"); filesReminder("program", programText(S.settings.program)); break; }
+    case "back": if(S.view==="tol" && S.tolDraft){ } else if(S.view==="diag"){ go(S.imp ? "import" : "program"); } else if(S.view==="guide"){ const b = S.guideBack; if(S.guide && S.guide.ctl) S.guide.ctl.abort(); S.guide = null; go(b||"program"); } else if(S.view==="import"){ if(S.imp && S.imp.ctl) S.imp.ctl.abort(); S.imp = null; go("program"); } else go("home"); break;
+    case "guide": { let g;
+      if(el.dataset.src==="a"){ const e = A.ex[+el.dataset.i]; g = {name:e.name, sets:e.log.length, target:e.target, rpe:e.rpeTarget, notes:e.notes, sided:e.sided}; }
+      else { const p = S.settings.program[el.dataset.blk][+el.dataset.k]; g = {name:p.name, sets:p.sets, target:p.target, rpe:p.rpe, notes:p.notes, sided:p.sided}; }
+      S.guide = g; S.guideBack = S.view==="session" ? "session" : "program"; go("guide"); break; }
+    case "cue-ok": setCueRating(1); render(); toast("Good to hear"); break;
+    case "cue-video": setCueRating(0); setTimeout(render,300); break;
+    case "pick": { const b = el.dataset.bind, v = el.dataset.val, root = rootFor(b[0]); if(!root) break; const path = b.slice(2);
+      if(el.dataset.multi){ const cur = (getPath(root,path)||[]).slice(); const i = cur.indexOf(v); if(i>=0) cur.splice(i,1); else cur.push(v); setBind(b,cur); }
+      else setBind(b, getPath(root,path)===v && !["q","r"].includes(b[0]) ? null : v);
+      render(); break; }
+    case "rt-new": S.rt = newRetest(false); go("retest"); break;
+    case "rt-baseline": S.rt = newRetest(true); render(); break;
+    case "rt-edit": S.rt = clone(S.records[el.dataset.id]); go("retest"); break;
+    case "rt-addrow": S.rt.rows.push({test:"", pos:"", L:null, R:null}); render(); break;
+    case "rt-delrow": S.rt.rows.splice(+el.dataset.k,1); render(); break;
+    case "rt-save": { const r = clone(S.rt); r.rows = r.rows.filter(x=>x.L!=null || x.R!=null);
+      if(!r.rows.length && r.extDeficit==null){ toast("Add at least one measurement"); break; }
+      if(!r.date) r.date = today(); putRecord(r); S.rt = null; go("trends"); S.histTab = "trends"; render(false); filesReminder("retest", retestText(r)); break; }
+    case "q-add": { const t = S.q.text.trim(); if(!t){ toast("Write your question first"); break; }
+      putRecord({id:"q-"+uid(), type:"question", date:today(), who:S.q.who, text:t, answered:false, answer:""}); S.q.text = ""; render(); toast("Question added"); break; }
+    case "q-answer": { const q = clone(S.records[el.dataset.id]);
+      ask("Mark this question answered?","Mark answered",ans=>{ q.answered = true; q.answer = (ans||"").trim(); putRecord(q); render(); },{text:"What was the answer? (optional)"}); break; }
+    case "q-reopen": { const q = clone(S.records[el.dataset.id]); q.answered = false; putRecord(q); render(); break; }
+    case "tol-start": tolStart(el.dataset.v); break;
+    case "tol-onset": tolEnd("onset"); break;
+    case "tol-none": tolEnd("none"); break;
+    case "tol-stop": tolEnd("stopped"); break;
+    case "tol-save": { const d = clone(S.tolDraft); putRecord(d); S.tolDraft = null; go("tol"); toast("Test saved"); break; }
+    case "tol-discard": ask("Discard this test?","Discard test",()=>{ S.tolDraft = null; go("tol"); },{danger:true}); break;
+    case "rep-open": go("report"); break;
+    case "fl-new": flightNew(); break;
+    case "fl-cancel": S.flight = null; saveFlight(); go("home"); break;
+    case "fl-discard": ask("Discard this flight? Nothing will be saved.","Discard flight",()=>{ S.flight = null; saveFlight(); keepAwake(false); go("home"); },{danger:true}); break;
+    case "fl-start": flightStart(); break;
+    case "fl-done": { const F = S.flight; F.breaks.push({at:Date.now(), dueAt:F.dueAt, heavyL:F.bk.heavyL, heavyR:F.bk.heavyR, skipped:false}); F.stage = "run"; F.nextAt = Date.now()+F.interval*60000; delete F.bk; saveFlight(); render(false); toast("Break logged"); break; }
+    case "fl-snooze": { const F = S.flight; F.snoozes++; F.stage = "run"; F.nextAt = Date.now()+600000; saveFlight(); render(false); break; }
+    case "fl-skip": { const F = S.flight; F.breaks.push({at:Date.now(), dueAt:F.dueAt, skipped:true}); F.stage = "run"; F.nextAt = Date.now()+F.interval*60000; saveFlight(); render(false); break; }
+    case "fl-now": { const F = S.flight; F.nextAt = Date.now(); saveFlight(); flightTick(); break; }
+    case "fl-pause": { const F = S.flight; F.paused = true; F.pausedLeft = Math.max(0,F.nextAt-Date.now()); saveFlight(); keepAwake(false); render(false); break; }
+    case "fl-resume": { const F = S.flight; F.paused = false; F.nextAt = Date.now()+(F.pausedLeft||F.interval*60000); saveFlight(); if(F.awake) keepAwake(true); render(false); break; }
+    case "fl-end": ask("Finish Flight Mode? You'll rate your legs and save the flight next.","Finish flight",()=>{ const F = S.flight, lb = lastBreakRating(); F.stage = "end"; F.endedAt = Date.now(); F.end = {heavyL:lb.heavyL, heavyR:lb.heavyR}; saveFlight(); keepAwake(false); render(false); window.scrollTo(0,0); }); break;
+    case "fl-resume-run": { const F = S.flight; F.stage = "run"; delete F.endedAt; saveFlight(); if(F.awake) keepAwake(true); render(false); break; }
+    case "fl-save": { const F = S.flight; putRecord({id:F.id, type:"flight", date:iso(new Date(F.startedAt)), startedAt:F.startedAt, endedAt:F.endedAt, minutes:Math.round((F.endedAt-F.startedAt)/60000), interval:F.interval, pre:F.pre, end:F.end, breaks:F.breaks, snoozes:F.snoozes, note:F.note});
+      S.flight = null; saveFlight(); go("home"); toast("Flight saved to your log"); break; }
+    case "mv-add": { const v = (document.getElementById("mv-new").value||"").trim(); if(!v) break; S.settings.flightMoves = [...(S.settings.flightMoves||[]), v.slice(0,120)]; setBind("s:updatedAt",Date.now()); render(); break; }
+    case "mv-del": { S.settings.flightMoves.splice(+el.dataset.k,1); setBind("s:updatedAt",Date.now()); render(); break; }
+    case "mv-ask": putRecord({id:"q-"+uid(), type:"question", date:today(), who:"Physio", text:"Which movements should I do in my seat and in the aisle on my long-haul flight, and how often?", answered:false, answer:""}); render(); toast("Added to your questions"); break;
+    case "rep-save": saveReport(); break;
+    case "rep-copy": filesText("Report as text", reportText(S.rep.days, S.rep.who)); break;
+    case "sym-new": S.sym = newSym(); go("symptom"); break;
+    case "sym-save": { const y = clone(S.sym); if(!y.what.length) break; putRecord(y); S.sym = null; go("home"); toast("Saved to your log"); break; }
+    case "export": exportData(); break;
+    case "modal-close": document.getElementById("modal").hidden = true; break;
+    case "cf-yes": { const fn = CF.fn, ta = document.getElementById("cf-text"), v = ta ? ta.value : undefined; CF.fn = null; document.getElementById("modal").hidden = true; if(fn) fn(v); break; }
+    case "cf-no": CF.fn = null; document.getElementById("modal").hidden = true; break;
+    case "copy": { const ta = document.getElementById("copytext"); try{ navigator.clipboard.writeText(ta.value).then(()=>toast("Copied")); }catch(err){ ta.select(); } break; }
+  }
+});
+
+/* in-app confirmation, since the Claude app blocks the browser's own pop-ups */
+const CF = {fn:null};
+function ask(msg, okLabel, fn, opts){
+  opts = opts || {};
+  CF.fn = fn;
+  document.getElementById("modal-body").innerHTML = `<p style="font-weight:600;font-size:1.1rem;margin-bottom:12px">${esc(msg)}</p>
+    ${opts.text?`<textarea id="cf-text" class="note" style="min-height:90px;margin-bottom:12px" placeholder="${esc(opts.text)}"></textarea>`:""}
+    <div class="row"><button class="btn ${opts.danger?"danger":"primary"}" data-a="cf-yes">${esc(okLabel)}</button><button class="btn" data-a="cf-no">Cancel</button></div>`;
+  document.getElementById("modal").hidden = false;
+  const ta = document.getElementById("cf-text"); if(ta) setTimeout(()=>ta.focus(),50);
+}
+function filesText(title, text){
+  document.getElementById("modal-body").innerHTML = `<h3>${esc(title)}</h3><textarea id="copytext" readonly>${esc(text)}</textarea><div class="row" style="margin-top:10px"><button class="btn primary" data-a="copy">Copy</button><button class="btn" data-a="modal-close">Close</button></div>`;
+  document.getElementById("modal").hidden = false;
+}
+const Cloud = {db:null, push(){}, pull(){ return Promise.resolve(); }, closeInbox(){}};
+
+/* ---------- start ---------- */
+if(S.active) S.view = "session";
+else if(S.tol){ S.view = "tol"; keepAwake(true); }
+else if(S.flight && S.flight.stage!=="setup"){ S.view = "flight"; if(S.flight.awake) keepAwake(true); }
+render(false);
+try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
+if("serviceWorker" in navigator && (location.protocol==="https:" || location.hostname==="localhost")){
+  navigator.serviceWorker.register("sw.js").catch(()=>{});
+}
+})();
+</script>
+</body>
+</html>
