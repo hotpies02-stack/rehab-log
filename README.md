@@ -69,7 +69,7 @@ Transcribe only what the physio wrote. Don't add, change or suggest exercises, a
 }
 ```
 
-- `block` is `warmup`, `gym` or `conditioning`.
+- `block` is `warmup`, `gym`, `mobility` (the daily nerve mobility routine) or `conditioning`.
 - `update` and `remove` must use the exercise's exact existing name, or the session ID for conditioning.
 - `update.set` holds only the fields that change.
 - Exercise fields are `name`, `sets`, `target` (as written), `kind` (`reps`, `time` or `distance`), `reps` (top of range), `secs` (hold seconds), `rpe`, `notes`, `sided` (each side or single leg), `weight` (load applies) and `kg`.
@@ -81,6 +81,7 @@ Transcribe only what the physio wrote. Don't add, change or suggest exercises, a
 {"rehablog": 1, "title": "Physio plan, week of 12 Oct",
  "warmup": [EXERCISE, ...] or null,
  "gym": [EXERCISE, ...] or null,
+ "mobility": [EXERCISE, ...] or null,
  "conditioning": [CONDITIONING, ...] or null,
  "unclear": []}
 ```

@@ -1,6 +1,6 @@
 /* Rehab log offline support.
    Change VERSION whenever you upload a new index.html, so phones pick up the update. */
-const VERSION = "rehab-log-v1";
+const VERSION = "rehab-log-v3";
 const CORE = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-maskable-512.png"];
 
 self.addEventListener("install", e => {
